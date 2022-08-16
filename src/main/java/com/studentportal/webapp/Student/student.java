@@ -1,4 +1,4 @@
-package com.studentportal.Student;
+package com.studentportal.webapp.Student;
 
 
 public class student {
