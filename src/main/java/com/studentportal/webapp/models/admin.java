@@ -1,4 +1,4 @@
-package com.studentportal.webapp.admin;
+package com.studentportal.webapp.models;
 
 import javax.persistence.*;
 

@@ -1,15 +1,16 @@
-package com.studentportal.webapp.admin;
+package com.studentportal.webapp.controllers;
 
-import java.util.ArrayList;
 import java.util.*;
-import com.studentportal.webapp.admin.*;
+import com.studentportal.webapp.models.admin;
+import com.studentportal.webapp.repo.adminRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/admin")
 public class admincontroller {
     @Autowired
     adminRepo myRepo;
