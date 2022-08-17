@@ -35,8 +35,7 @@ public class courseController {
         }
     }
 
-
-
+    
     @GetMapping("/testing")
     public List<course> getStudent(){
 
@@ -48,4 +47,6 @@ public class courseController {
     public Optional<course> getAttr(Model model,@PathVariable(value="id") Long id) {
             return myRepo.findById(id);
     }
+
+
 }

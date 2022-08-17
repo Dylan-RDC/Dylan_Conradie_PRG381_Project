@@ -30,6 +30,10 @@ public class course implements Serializable {
     public course() {
     }
 
+    public course(Long course_id) {
+        this.course_id = course_id;
+    }
+
     public course(Long course_id, String course_name, List<student> enrolledStudents) {
         this.course_id = course_id;
         this.course_name = course_name;
