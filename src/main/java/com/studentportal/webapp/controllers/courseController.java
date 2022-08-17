@@ -1,11 +1,10 @@
 package com.studentportal.webapp.controllers;
 
-
 import java.util.*;
 
-
+import com.studentportal.webapp.models.course;
 import com.studentportal.webapp.models.student;
-
+import com.studentportal.webapp.repo.courseRepo;
 import com.studentportal.webapp.repo.studentRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +14,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
-@RequestMapping("/student")
-public class studentController {
+@RequestMapping("/course")
+public class courseController {
     @Autowired
-    studentRepo myRepo;
+    courseRepo myRepo;
 
-    public List<student> findStudents()
+    public List<course> findCourse()
     {
         try {
             var response = myRepo.findAll(); 
+            System.out.println(response.get(0).getCourse_id()+response.get(0).getEnrolledStudents().toString());
+
+
             return response;
             
         } catch (Exception e) {
@@ -37,14 +38,14 @@ public class studentController {
 
 
     @GetMapping("/testing")
-    public List<student> getStudent(){
+    public List<course> getStudent(){
 
-        return findStudents();
+        return findCourse();
     }
   
 
     @GetMapping("/find/{id}")
-    public Optional<student> getAttr(Model model,@PathVariable(value="id") Long id) {
+    public Optional<course> getAttr(Model model,@PathVariable(value="id") Long id) {
             return myRepo.findById(id);
     }
 }

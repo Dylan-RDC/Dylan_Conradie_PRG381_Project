@@ -1,16 +1,24 @@
 package com.studentportal.webapp.models;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonView;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity 
 @Table(name= "course")
-public class course {
+public class course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
@@ -19,20 +27,18 @@ public class course {
     @Column(name = "course_name")
     private String course_name;
 
-    @ManyToMany(mappedBy = "StudentCourses")
-    @JsonIgnore
-    Set<student> EnrolledStudents = new HashSet<>();
+    
+
+    @ManyToMany(mappedBy = "studentcourses")
+    List<student> enrolledstudents = new ArrayList<student>();
 
     public course() {
     }
 
-    public course(Long course_id, String course_name) {
+    public course(Long course_id, String course_name, List<student> enrolledStudents) {
         this.course_id = course_id;
         this.course_name = course_name;
-    }
-
-    public course(String course_name) {
-        this.course_name = course_name;
+        enrolledstudents = enrolledStudents;
     }
 
     public Long getCourse_id() {
@@ -51,15 +57,18 @@ public class course {
         this.course_name = course_name;
     }
 
-    @JsonBackReference//prevents infinite recusrion
-    public Set<student> getEnrolledStudents() {
-        return EnrolledStudents;
+
+    @JsonIgnoreProperties({"studentCourses"})
+    public List<student> getEnrolledStudents() {
+        return enrolledstudents;
     }
 
     public void addEnrolledStudent(student newStudent) {
-        EnrolledStudents.add(newStudent);
+        getEnrolledStudents().add(newStudent);
         newStudent.getStudentCourses().add(this);
     }
+
+    
     
     
 
