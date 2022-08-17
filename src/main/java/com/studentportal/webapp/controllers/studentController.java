@@ -9,9 +9,12 @@ import com.studentportal.webapp.models.student;
 import com.studentportal.webapp.repo.studentRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +38,16 @@ public class studentController {
     }
 
 
+    @PutMapping("update")
+    public String updateStudent(student stud) {
+        
+        try {
+            myRepo.save(stud);
+            return "Register Successful";
+        } catch (Exception e) {
+            return e.getMessage();
+        }
+}
 
     @GetMapping("/testing")
     public List<student> getStudent(){
@@ -44,7 +57,7 @@ public class studentController {
   
 
     @GetMapping("/find/{id}")
-    public Optional<student> getAttr(Model model,@PathVariable(value="id") Long id) {
+    public Optional<student> getStudent(Model model,@PathVariable(value="id") Long id) {
             return myRepo.findById(id);
     }
 }

@@ -2,24 +2,18 @@ package com.studentportal.webapp.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerator;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 
 
 @Entity
 @Table(name = "student")
-public class student implements Serializable{
+public class student implements Serializable, Iuser{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id")
@@ -32,7 +26,7 @@ public class student implements Serializable{
     private String student_address;
 
     @Column(name = "student_email")
-    private String contact;
+    private String student_email;
 
     @Column(name = "student_password")
     private String student_password;
@@ -48,19 +42,19 @@ public class student implements Serializable{
     public student() {
     }
 
-    public student(Long student_id, String student_name, String student_address, String contact,
+    public student(Long student_id, String student_name, String student_address, String student_email,
         String student_password) {
         this.student_id = student_id;
         this.student_name = student_name;
         this.student_address = student_address;
-        this.contact = contact;
+        this.student_email = student_email;
         this.student_password = student_password;
     }
 
-    public student(String student_name, String student_address, String contact, String student_password) {
+    public student(String student_name, String student_address, String student_email, String student_password) {
         this.student_name = student_name;
         this.student_address = student_address;
-        this.contact = contact;
+        this.student_email = student_email;
         this.student_password = student_password;
     }
 
@@ -85,12 +79,12 @@ public class student implements Serializable{
         this.student_address = student_address;
     }
 
-    public String getContact() {
-        return contact;
+    public String getstudent_email() {
+        return student_email;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
+    public void setstudent_email(String student_email) {
+        this.student_email = student_email;
     }
 
     public String getStudent_password() {
@@ -116,7 +110,7 @@ public class student implements Serializable{
 
     @Override
     public String toString() {
-        return "student [contact=" + contact + ", student_address=" + student_address + ", student_id=" + student_id
+        return "student [student_email=" + student_email + ", student_address=" + student_address + ", student_id=" + student_id
                 + ", student_name=" + student_name + ", student_password=" + student_password + ", studentcourses="
                 + studentcourses + "]";
     }
@@ -125,23 +119,15 @@ public class student implements Serializable{
         return student_id;
     }
 
+    @Override
+    public String getEmail() {
+        
+        return student_email;
+    }
 
-
-   
-
-    
-
-    
-
-    
-    
-    
-    
-
-
-
-
-
-    
-
+    @Override
+    public String getPassword() {
+        
+        return this.student_password;
+    }
 }
