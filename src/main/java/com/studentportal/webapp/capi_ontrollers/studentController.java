@@ -111,7 +111,7 @@ public class studentController {
     }
 
     @DeleteMapping("/student/{stud_id}/{course_id}")
-    public String removeRole(Model model,@PathVariable(value="id") Long stud_id,@PathVariable(value="id") Long course_id) {
+    public String removeRole(Model model,@PathVariable(value="stud_id") Long stud_id,@PathVariable(value="course_id") Long course_id) {
         try {
             
             Optional<student> myStud = myRepo.findById(stud_id);

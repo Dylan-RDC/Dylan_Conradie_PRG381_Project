@@ -45,7 +45,7 @@
                         <i class="fa-solid fa-graduation-cap fa-xl"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown1">
-                        <li><a class="dropdown-item" href="/admin/login">Log out</a></li>
+                        <li><a class="dropdown-item" href="/admin/display/login">Log out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -56,7 +56,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/display/home">Home</a>
+                        <a class="nav-link" href="/admin/display/students">Home</a>
                     </li>
                 </ul>
             </div>
@@ -92,7 +92,7 @@
                         <tr class="rounded" th:each="student: ${students}">
                             <td th:text="${student.student_id}"></td>
                             <td th:text="${student.student_name}"></td>
-                            <td><a th:href="@{'/admin/edit/student/' + ${student.student_id}}" class="btn
+                            <td><a th:href="@{'/admin/display/edit/student/' + ${student.student_id}}" class="btn
                                 btn-outline-success fw-bold rounded-pill py-0">EDIT</a>
                                 <a th:href="@{'/admin/delete/student/' + ${student.student_id}}" class="btn
                                 btn-danger rounded-pill py-0">DELETE</a>

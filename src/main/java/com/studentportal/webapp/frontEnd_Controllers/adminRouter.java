@@ -16,7 +16,7 @@ import com.studentportal.webapp.models.student;
 public class adminRouter {
     
 
-    @GetMapping("/admins")
+    @GetMapping("/students")
 	public String studentCourses(Model model) 
 	{
 
@@ -31,4 +31,23 @@ public class adminRouter {
         model.addAttribute("admin",ad);
 		return "AdminHome.html";
 	}
+
+
+    
+    @GetMapping("/edit/student/{stud_id}")
+    public String editStudentForm(Model model,@PathVariable(value="stud_id") Long stud_id)
+	{
+
+
+        String StudUri = String.format("http://localhost:8080/student/find/%d", stud_id);
+        String adminUri = "http://localhost:8080/admin/find/2";
+        RestTemplate restTemplate = new RestTemplate();
+        admin ad = restTemplate.getForObject(adminUri, admin.class);
+        student stud = restTemplate.getForObject(StudUri, student.class);
+
+		model.addAttribute("student",stud);
+        model.addAttribute("admin",ad);
+		return "AdminEditStudent.html";
+	}
+
 }
