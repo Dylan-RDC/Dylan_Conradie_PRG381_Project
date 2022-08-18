@@ -40,6 +40,20 @@ public class course implements Serializable {
         enrolledstudents = enrolledStudents;
     }
 
+    
+    
+
+    @Override
+    public String toString() {
+        return "course [course_id=" + course_id + ", course_name=" + course_name + ", enrolledstudents="
+                + enrolledstudents + "]";
+    }
+
+    public course(Long course_id, String course_name) {
+        this.course_id = course_id;
+        this.course_name = course_name;
+    }
+
     public Long getCourse_id() {
         return course_id;
     }

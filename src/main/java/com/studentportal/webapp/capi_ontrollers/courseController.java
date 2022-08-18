@@ -1,4 +1,4 @@
-package com.studentportal.webapp.controllers;
+package com.studentportal.webapp.capi_ontrollers;
 
 import java.util.*;
 
@@ -20,13 +20,31 @@ public class courseController {
     @Autowired
     courseRepo myRepo;
 
-    public List<course> findCourse()
+    public List<course> findCourses()
     {
         try {
             var response = myRepo.findAll(); 
-            System.out.println(response.get(0).getCourse_id()+response.get(0).getEnrolledStudents().toString());
+            // System.out.println(response.get(0).getCourse_id()+response.get(0).getEnrolledStudents().toString());
+            List<course> filtered = new ArrayList<>();
+            
+            response.forEach((course)->{
+                course fixed_course = new course(course.getCourse_id(), course.getCourse_name());
+                filtered.add(fixed_course);
+            });
 
+            return filtered;
+            
+        } catch (Exception e) {
+             System.out.println(e.getMessage());
+            return null;
+        }
+    }
 
+    public List<course> findAllCourses()
+    {
+        try {
+            var response = myRepo.findAll(); 
+            // System.out.println(response.get(0).getCourse_id()+response.get(0).getEnrolledStudents().toString());
             return response;
             
         } catch (Exception e) {
@@ -37,9 +55,9 @@ public class courseController {
 
     
     @GetMapping("/testing")
-    public List<course> getStudent(){
+    public List<course> getCourses(){
 
-        return findCourse();
+        return findCourses();
     }
   
 

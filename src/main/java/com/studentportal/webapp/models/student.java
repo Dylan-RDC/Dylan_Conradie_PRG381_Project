@@ -26,10 +26,10 @@ public class student implements Serializable, Iuser{
     private String student_address;
 
     @Column(name = "student_email")
-    private String student_email;
+    private String email;
 
     @Column(name = "student_password")
-    private String student_password;
+    private String password;
 
     
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.LAZY)
@@ -47,17 +47,32 @@ public class student implements Serializable, Iuser{
         this.student_id = student_id;
         this.student_name = student_name;
         this.student_address = student_address;
-        this.student_email = student_email;
-        this.student_password = student_password;
+        this.email = student_email;
+        this.password = student_password;
     }
 
     public student(String student_name, String student_address, String student_email, String student_password) {
         this.student_name = student_name;
         this.student_address = student_address;
-        this.student_email = student_email;
-        this.student_password = student_password;
+        this.email = student_email;
+        this.password = student_password;
     }
 
+    
+
+
+    public student(Long student_id, String student_name, String student_email, List<course> studentcourses) {
+        this.student_id = student_id;
+        this.student_name = student_name;
+        this.email = student_email;
+        this.studentcourses = studentcourses;
+    }
+
+    public student(Long student_id, String student_name, List<course> studentcourses) {
+        this.student_id = student_id;
+        this.student_name = student_name;
+        this.studentcourses = studentcourses;
+    }
 
     public void setStudent_id(Long student_ID) {
         this.student_id = student_ID;
@@ -79,21 +94,13 @@ public class student implements Serializable, Iuser{
         this.student_address = student_address;
     }
 
-    public String getstudent_email() {
-        return student_email;
-    }
 
-    public void setstudent_email(String student_email) {
-        this.student_email = student_email;
-    }
 
-    public String getStudent_password() {
-        return student_password;
-    }
 
-    public void setStudent_password(String student_password) {
-        this.student_password = student_password;
-    }
+
+   
+
+   
 
     
     @JsonIgnoreProperties({"enrolledStudents"})
@@ -108,11 +115,13 @@ public class student implements Serializable, Iuser{
 
     
 
+   
+
     @Override
     public String toString() {
-        return "student [student_email=" + student_email + ", student_address=" + student_address + ", student_id=" + student_id
-                + ", student_name=" + student_name + ", student_password=" + student_password + ", studentcourses="
-                + studentcourses + "]";
+        return "student [email=" + email + ", password=" + password + ", student_address=" + student_address
+                + ", student_id=" + student_id + ", student_name=" + student_name + ", studentcourses=" + studentcourses
+                + "]";
     }
 
     public Long getStudent_id() {
@@ -122,12 +131,24 @@ public class student implements Serializable, Iuser{
     @Override
     public String getEmail() {
         
-        return student_email;
+        return email;
     }
 
     @Override
     public String getPassword() {
         
-        return this.student_password;
+        return this.password;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setStudentcourses(List<course> studentcourses) {
+        this.studentcourses = studentcourses;
     }
 }

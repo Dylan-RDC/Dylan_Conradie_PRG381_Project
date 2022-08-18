@@ -22,7 +22,7 @@ public class admin implements Iuser{
     private String contact;
 
     @Column(name = "admin_email")
-    private String admin_email;
+    private String email;
 
     
 
@@ -36,7 +36,7 @@ public class admin implements Iuser{
         this.admin_name = admin_name;
         this.password = password;
         this.contact = contact;
-        this.admin_email = admin_email;
+        this.email = admin_email;
     }
 
     
@@ -47,7 +47,7 @@ public class admin implements Iuser{
         this.admin_name = admin_name;
         this.password = password;
         this.contact = contact;
-        this.admin_email = admin_email;
+        this.email = admin_email;
     }
 
 
@@ -81,24 +81,22 @@ public class admin implements Iuser{
         this.contact = contact;
     }
 
-    public String getAdmin_email() {
-        return admin_email;
-    }
-
-    public void setAdmin_email(String admin_email) {
-        this.admin_email = admin_email;
-    }
-
-
+    
 
     @Override
     public String getEmail() {
-        return admin_email;
+        return email;
         
     }
 
     @Override
     public String getPassword() {
         return password;
+    }
+
+
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

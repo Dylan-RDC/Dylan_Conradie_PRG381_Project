@@ -1,4 +1,4 @@
-package com.studentportal.webapp.controllers;
+package com.studentportal.webapp.capi_ontrollers;
 
 
 import java.security.SecureRandom;
@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,8 +51,8 @@ public class studentController {
         try {
             if (stud.getStudent_id()==null) {
                 String password = bCryptPasswordEncoder.encode(stud.getPassword());
-                System.out.println(password.length());
-                stud.setStudent_password(password);
+                // System.out.println(password.length());
+                stud.setPassword(password);
                 myRepo.save(stud);
                 return "Register Successful"; 
             }
@@ -71,7 +72,7 @@ public class studentController {
 
             if (myRepo.findById(stud.getStudent_id()).isPresent()) {
                 String password = bCryptPasswordEncoder.encode(stud.getPassword());
-                stud.setStudent_password(password);
+                stud.setPassword(password);
                 myRepo.save(stud);
                 return String.format("Updated user: %s Successful", stud.getStudent_name());
             }
@@ -109,4 +110,30 @@ public class studentController {
             return myRepo.findById(id);
     }
 
+    @DeleteMapping("/student/{stud_id}/{course_id}")
+    public String removeRole(Model model,@PathVariable(value="id") Long stud_id,@PathVariable(value="id") Long course_id) {
+        try {
+            
+            Optional<student> myStud = myRepo.findById(stud_id);
+            if (myStud.isPresent()) {
+                student foundStud = myStud.get();
+    
+                List<course> courses = foundStud.getStudentCourses();
+    
+                for (course course : courses) {
+                    if (course.getCourse_id()==course_id) {
+                        foundStud.getStudentCourses().remove(course);
+                        myRepo.save(foundStud);
+                        return String.format("Successfully removed %s from student with student id: %d", course.getCourse_name(),foundStud.getStudent_id());
+                    }
+                }
+    
+            }
+            return "COURSE NOT DELETED";
+        } catch (Exception e) {
+            return String.format("Failed %s", e.getMessage());
+        }
+
+
+}
 }
