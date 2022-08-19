@@ -5,7 +5,9 @@ import javax.persistence.*;
 
 
 @Entity 
-@Table(name= "administrator")
+@Table(name= "administrator",
+uniqueConstraints =  @UniqueConstraint(columnNames = {"admin_email"})         
+)
 public class admin implements Iuser{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,13 +26,21 @@ public class admin implements Iuser{
     @Column(name = "admin_email")
     private String email;
 
-    
+    @Transient()
+     private String role = "ADMIN";
+    // private Boolean enabled;
 
     // constructors
     public admin() {
     }
 
     
+
+    public admin(String email) {
+        this.email = email;
+    }
+
+
 
     public admin(String admin_name, String password, String contact, String admin_email) {
         this.admin_name = admin_name;
@@ -99,4 +109,28 @@ public class admin implements Iuser{
     public void setEmail(String email) {
         this.email = email;
     }
+
+
+
+    @Override
+    public String getRole() {
+        return this.role;
+    }
+
+    @Override
+    public String getUsername() {
+       return this.email;
+    }
+
+
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    // public void setEnabled(boolean enabled) {
+    //     this.enabled = enabled;
+    // }
+    
 }

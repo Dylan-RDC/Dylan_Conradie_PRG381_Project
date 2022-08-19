@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity
-@Table(name = "student")
+@Table(name = "student",
+uniqueConstraints =  @UniqueConstraint(columnNames = {"student_email"})         
+)
 public class student implements Serializable, Iuser{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +33,10 @@ public class student implements Serializable, Iuser{
     @Column(name = "student_password")
     private String password;
 
-    
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.LAZY)
+    @Transient()
+    private String role = "STUDENT";
+
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.EAGER)
     @JoinTable(name = "register",
     joinColumns = {@JoinColumn(name="student_id")},
     inverseJoinColumns = {@JoinColumn(name="course_id")}
@@ -150,5 +154,21 @@ public class student implements Serializable, Iuser{
 
     public void setStudentcourses(List<course> studentcourses) {
         this.studentcourses = studentcourses;
+    }
+
+    @Override
+    public String getRole() {
+        return this.role;
+    }
+
+    @Override
+    public String getUsername() {
+       return this.email;
+    }
+
+    @Override
+    public boolean isEnabled() {
+
+        return  true;
     }
 }

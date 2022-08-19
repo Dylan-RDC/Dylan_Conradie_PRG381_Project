@@ -10,7 +10,7 @@ import com.studentportal.webapp.repo.courseRepo;
 import com.studentportal.webapp.repo.studentRepo;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Async;
+import org.springframework.http.HttpEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -31,7 +31,7 @@ public class studentController {
     @Autowired
     courseRepo cRepo;
 
-    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10,new SecureRandom());
+    BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(10);
 
     public List<student> findStudents()
     {
@@ -46,22 +46,17 @@ public class studentController {
     }
 
     @PostMapping("/insert")
-    public String insertStudent(student stud)
-    {
+    public String insertStudent(HttpEntity<student> stud)
+    {   
+        student newStud = (student)stud.getBody();
         try {
-            if (stud.getStudent_id()==null) {
-                String password = bCryptPasswordEncoder.encode(stud.getPassword());
-                // System.out.println(password.length());
-                stud.setPassword(password);
-                myRepo.save(stud);
+                String password = bCryptPasswordEncoder.encode(newStud.getPassword());
+                System.out.println(password.length());
+                newStud.setPassword(password);
+                myRepo.save(newStud);
                 return "Register Successful"; 
-            }
-            else
-            {
-                return "User already exists";
-            }
         } catch (Exception e) {
-            return e.getMessage();
+            return "Error";
         } 
     }
 
@@ -100,7 +95,7 @@ public class studentController {
 
     @GetMapping("/testing")
     public List<student> getStudent(){
-
+        
         return findStudents();
     }
   

@@ -1,62 +1,72 @@
-// package com.studentportal.webapp.security;
+package com.studentportal.webapp.security;
+ 
+import java.util.*;
 
-// import java.util.ArrayList;
-// import java.util.Arrays;
-// import java.util.Collection;
-// import java.util.HashSet;
-// import java.util.*;
+import org.apache.catalina.User;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.StopWatch;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.security.core.GrantedAuthority;
-// import org.springframework.security.core.userdetails.UserDetails;
+import com.studentportal.webapp.models.Iuser;
+import com.studentportal.webapp.models.admin;
+import com.studentportal.webapp.models.student;
+ 
 
-// import com.studentportal.webapp.models.role;
-
-// public class MyUserDetails implements UserDetails{
-
-//     @Autowired
-//     Set<role> roles = new HashSet<>(Arrays.asList(new role("ADMIN"),new role("STUDENT")));
-
-//     @Override
-//     public Collection<? extends GrantedAuthority> getAuthorities() {
+ 
+public class MyUserDetails implements UserDetails {
+ 
+    private Iuser user;
+     
+    public MyUserDetails(Iuser User) {
+        this.user = User; 
+    }
+ 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
         
-//         return roles;
-//     }
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
-//     @Override
-//     public String getPassword() {
-//         // TODO Auto-generated method stub
-//         return null;
-//     }
+        if (student.class.isInstance(user)) {
+            authorities.add(new SimpleGrantedAuthority("STUDENT"));
+        }
 
-//     @Override
-//     public String getUsername() {
-//         // TODO Auto-generated method stub
-//         return null;
-//     }
+        if (admin.class.isInstance(user)) {
+            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+        }        
+     return authorities;
+    }
+ 
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
+ 
+    @Override
+    public String getUsername() {
+        return user.getUsername();
+    }
+ 
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+ 
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+ 
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+ 
+    @Override
+    public boolean isEnabled() {
+        return user.isEnabled();
+    }
 
-//     @Override
-//     public boolean isAccountNonExpired() {
-//         // TODO Auto-generated method stub
-//         return false;
-//     }
 
-//     @Override
-//     public boolean isAccountNonLocked() {
-//         // TODO Auto-generated method stub
-//         return false;
-//     }
-
-//     @Override
-//     public boolean isCredentialsNonExpired() {
-//         // TODO Auto-generated method stub
-//         return false;
-//     }
-
-//     @Override
-//     public boolean isEnabled() {
-//         // TODO Auto-generated method stub
-//         return false;
-//     }
-    
-// }
+}

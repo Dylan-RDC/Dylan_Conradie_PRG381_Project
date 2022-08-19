@@ -3,9 +3,8 @@ package com.studentportal.webapp.capi_ontrollers;
 import java.util.*;
 
 import com.studentportal.webapp.models.course;
-import com.studentportal.webapp.models.student;
 import com.studentportal.webapp.repo.courseRepo;
-import com.studentportal.webapp.repo.studentRepo;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;

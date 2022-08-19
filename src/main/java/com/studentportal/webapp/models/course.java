@@ -1,9 +1,8 @@
 package com.studentportal.webapp.models;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+
 
 import javax.persistence.*;
 
@@ -12,7 +11,8 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 @Entity 
-@Table(name= "course")
+@Table(name= "course", uniqueConstraints =  @UniqueConstraint(columnNames = {"course_name"}))
+
 public class course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +23,8 @@ public class course implements Serializable {
     private String course_name;
 
     
-
-    @ManyToMany(mappedBy = "studentcourses")
+    
+    @ManyToMany(mappedBy = "studentcourses", fetch = FetchType.EAGER)
     List<student> enrolledstudents = new ArrayList<student>();
 
     public course() {

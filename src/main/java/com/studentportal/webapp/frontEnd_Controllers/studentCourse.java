@@ -2,8 +2,11 @@ package com.studentportal.webapp.frontEnd_Controllers;
 
 import java.util.*;
 
+import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,6 +26,7 @@ public class studentCourse {
         names.add("Dylan");
         names.add("cameron");
 
+        
 
         String StudUri = "http://localhost:8080/student/find/2";
         String CourseUri = "http://localhost:8080/course/testing";
@@ -59,16 +63,40 @@ public class studentCourse {
         student result = restTemplate.getForObject(StudUri, student.class);
         Collection response = restTemplate.getForObject(CourseUri, Collection.class);
         List<course> courses = (List<course>) response;
+
+
+        
+
+
 		model.addAttribute("student",result);
         model.addAttribute("courses",courses);
 		return "StudentDetails.html";
 	}
 
-    @GetMapping("/student/register/{name}")
-    public String getAttr(Model model,@PathVariable(value="name") String studname) {
-            model.addAttribute("names",new ArrayList<String>(Arrays.asList(studname)));
+    @PostMapping("/register")
+    public String addStudent(@Validated student user, BindingResult result, Model model) {
+        
+        if (result.hasErrors()) {
+            model.addAttribute("newStudent",new student());
+		    return "StudentRegistration.html";
+        }
 
-            return "test.html";
+        String StudUri = "http://localhost:8080/student/insert";
+        RestTemplate restTemplate = new RestTemplate();
+        System.out.println("REPO" + user);
+        HttpEntity<student> req = new HttpEntity<student>(user);
+        
+        String response = restTemplate.postForObject(StudUri, req, String.class );
+
+        if (response!="Error") {
+            model.addAttribute("newStudent",user);
+            return "StudentRegistration.html";
+        }
+
+
+
+        model.addAttribute("newStudent",user);
+		return "StudentRegistration.html";
     }
 
     @GetMapping("/register")

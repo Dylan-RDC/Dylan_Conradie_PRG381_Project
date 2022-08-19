@@ -17,6 +17,9 @@ public class admincontroller {
     @Autowired
     adminRepo myRepo;
 
+
+
+
     public List<admin> getAdmin()
     {
         try {
@@ -38,6 +41,14 @@ public class admincontroller {
     public List<admin> getAdmins(){
 
         return getAdmin();
+    }
+
+    @GetMapping("/test")
+    public admin getAd() 
+    {
+         admin ad = myRepo.getAdminByEmail("craig@gmail.com");
+        System.out.println(ad);
+        return ad;
     }
        
 }
