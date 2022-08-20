@@ -34,19 +34,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
  
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        System.out.println("this ");
         auth.authenticationProvider(authenticationProvider());
     }
  
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers("/**").hasAuthority("ADMIN")
+            .antMatchers("/**").hasAnyAuthority("ADMIN","STUDENT")
             .anyRequest().authenticated()
             .and()
-            .formLogin().loginPage("/login").permitAll()
-            .and()
-            .logout().permitAll()
+            .formLogin()
+            .loginPage("/login")
+            .defaultSuccessUrl("/student/display/details")
+            .permitAll()
             .and()
             .exceptionHandling().accessDeniedPage("/403")
             ;

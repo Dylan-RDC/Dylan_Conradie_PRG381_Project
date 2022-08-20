@@ -1,7 +1,6 @@
-package com.studentportal.webapp.capi_ontrollers;
+package com.studentportal.webapp.Api_Controllers;
 
 
-import java.security.SecureRandom;
 import java.util.*;
 
 import com.studentportal.webapp.models.course;
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/api/student")
 public class studentController {
     @Autowired
     studentRepo myRepo;

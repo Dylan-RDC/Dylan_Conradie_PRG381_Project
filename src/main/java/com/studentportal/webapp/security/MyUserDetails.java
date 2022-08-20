@@ -2,12 +2,11 @@ package com.studentportal.webapp.security;
  
 import java.util.*;
 
-import org.apache.catalina.User;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.util.StopWatch;
+
 
 import com.studentportal.webapp.models.Iuser;
 import com.studentportal.webapp.models.admin;
@@ -37,7 +36,12 @@ public class MyUserDetails implements UserDetails {
         }        
      return authorities;
     }
- 
+    
+    public Iuser getUser()
+    {
+        return this.user;
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();

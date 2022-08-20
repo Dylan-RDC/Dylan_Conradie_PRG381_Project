@@ -6,23 +6,22 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.studentportal.webapp.models.Iuser;
-import com.studentportal.webapp.models.student;
-import com.studentportal.webapp.repo.adminRepo;
-import com.studentportal.webapp.repo.studentRepo;
+import com.studentportal.webapp.service.adminService;
+import com.studentportal.webapp.service.studentService;
 
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
-    private adminRepo adminRep;
+    private adminService adService;
 
     @Autowired
-    private studentRepo studRep;
+    private studentService studService;
 
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-            Iuser admin = adminRep.getAdminByEmail(email);
-            Iuser stud = studRep.getStudentByEmail(email);
+            Iuser admin = adService.getAdminByEmail(email);
+            Iuser stud = studService.getStudentByEmail(email);
 
             System.out.println(stud!=null);
             if (stud!=null) {

@@ -79,19 +79,20 @@
         </div>
         <hr>
         <div class="container-sm">
-            <form class="row mb-3 gx-3">
+            <form class="row mb-3 gx-3" method="post" th:action="@{/login}">
                 <div class="col">
+                    <div th:if="${param.error}" class="invalid-feedback">First name is required!</div>
                     <div class="form-floating mb-3">
 
-                        <input class="form-control form-control-lg" type="text" id="stud_id">
+                        <input class="form-control form-control-lg" type="text" name="username" id="username">
                         <label for="stud_id">Email</label>
-                        <div class="invalid-feedback">First name is required!</div>
                     </div>
                 </div>
 
                 <div class="col">
                     <div class="form-floating">
-                        <input class="form-control form-control-lg" type="password" id="student_name" required>
+                        <input class="form-control form-control-lg" type="password" name="password" id="password"
+                            required>
                         <label for="student_name">Password</label>
 
                     </div>

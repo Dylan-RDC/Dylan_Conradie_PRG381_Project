@@ -1,11 +1,12 @@
-package com.studentportal.webapp.capi_ontrollers;
+package com.studentportal.webapp.Api_Controllers;
 
 import java.util.*;
 
 import com.studentportal.webapp.models.course;
+import com.studentportal.webapp.models.student;
 import com.studentportal.webapp.repo.courseRepo;
 
-
+import org.hibernate.annotations.SourceType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/course")
+@RequestMapping("/api/courses")
 public class courseController {
     @Autowired
     courseRepo myRepo;
@@ -23,12 +24,19 @@ public class courseController {
     {
         try {
             var response = myRepo.findAll(); 
-            // System.out.println(response.get(0).getCourse_id()+response.get(0).getEnrolledStudents().toString());
             List<course> filtered = new ArrayList<>();
             
-            response.forEach((course)->{
-                course fixed_course = new course(course.getCourse_id(), course.getCourse_name());
-                filtered.add(fixed_course);
+            response.forEach((c)->{
+                
+                course fixed_course = new course(c.getCourse_id(), c.getCourse_name());
+
+                List<student> studs = new ArrayList<>();
+                for (student stud : c.getEnrolledStudents()) {//hides student passwords
+                    studs.add(new student(stud.getStudent_id(),stud.getStudent_name(),stud.getEmail()));
+                }
+
+                filtered.add(new course(c.getCourse_id(), c.getCourse_name(), studs));
+
             });
 
             return filtered;

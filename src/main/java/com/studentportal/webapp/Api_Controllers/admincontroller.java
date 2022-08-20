@@ -1,4 +1,4 @@
-package com.studentportal.webapp.capi_ontrollers;
+package com.studentportal.webapp.Api_Controllers;
 
 import java.util.*;
 import com.studentportal.webapp.models.admin;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 public class admincontroller {
     @Autowired
     adminRepo myRepo;

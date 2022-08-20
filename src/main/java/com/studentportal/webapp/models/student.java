@@ -36,6 +36,29 @@ public class student implements Serializable, Iuser{
     @Transient()
     private String role = "STUDENT";
 
+    @Transient()
+    private String newPassword;
+
+    public student(Long student_id, String student_name, String student_address, String email, String password,
+            String role, String newPassword, List<course> studentcourses) {
+        this.student_id = student_id;
+        this.student_name = student_name;
+        this.student_address = student_address;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.newPassword = newPassword;
+        this.studentcourses = studentcourses;
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.EAGER)
     @JoinTable(name = "register",
     joinColumns = {@JoinColumn(name="student_id")},
@@ -63,7 +86,13 @@ public class student implements Serializable, Iuser{
     }
 
     
+    
 
+    public student(Long student_id, String student_name, String email) {
+        this.student_id = student_id;
+        this.student_name = student_name;
+        this.email = email;
+    }
 
     public student(Long student_id, String student_name, String student_email, List<course> studentcourses) {
         this.student_id = student_id;
@@ -98,7 +127,9 @@ public class student implements Serializable, Iuser{
         this.student_address = student_address;
     }
 
-
+    public void setStudCourse(List<course> newCourses){
+        this.studentcourses = newCourses;
+    }
 
 
 
