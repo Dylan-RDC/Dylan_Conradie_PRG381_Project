@@ -93,11 +93,6 @@ public class studentCourse {
 		return "redirect:http://localhost:8080/student/display/details";
 	}
 
-
-
-
-
-
     @GetMapping("/courses")
 	public String studentCourses(@AuthenticationPrincipal MyUserDetails myUser,Model model) 
 	{
@@ -132,8 +127,6 @@ public class studentCourse {
 
         
 
-
-
         model.addAttribute("newCourse", new course());
 		model.addAttribute("student",CurrentStud);
         model.addAttribute("courses",filtered);
@@ -146,10 +139,7 @@ public class studentCourse {
 
             return "test.html";
     }
-
-    
-
-    
+   
     @GetMapping("/details")
 	public String homePage(@AuthenticationPrincipal MyUserDetails myUser,Model model) 
 	{
@@ -167,6 +157,9 @@ public class studentCourse {
         // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         student CurrentStud = (student)myUser.getUser();
 
+        
+        
+    
 		model.addAttribute("student",(CurrentStud));
         model.addAttribute("courses",(CurrentStud.getStudentCourses()));
 		return "StudentDetails.html";
@@ -220,12 +213,5 @@ public class studentCourse {
 
 
 
-    
-    // @RequestMapping("/test")
-    // public ModelAndView index () {
-    //     ModelAndView modelAndView = new ModelAndView();
-    //     modelAndView.setViewName("test.html");
-    //     return modelAndView;
-    // }
 
 }

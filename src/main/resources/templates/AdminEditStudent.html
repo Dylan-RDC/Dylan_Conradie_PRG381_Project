@@ -134,12 +134,13 @@
         </div>
         <hr>
         <div class="container-sm">
-            <form class="row mb-3 gx-3">
+            <form class="row mb-3 gx-3" th:action="@{/admin/display/student/update}" th:object="${student}"
+                method="post">
                 <div class="col">
                     <div class="form-floating mb-3">
 
-                        <input class="form-control form-control-lg" type="text" id="stud_id"
-                            th:value="${student.getStudent_id()}" disabled>
+                        <input class="form-control form-control-lg" type="text" id="stud_id" th:field="*{student_id}"
+                            readonly="true">
                         <label for="stud_id">Student ID</label>
                         <div class="invalid-feedback">First name is required!</div>
                     </div>
@@ -147,28 +148,28 @@
 
                 <div class="col">
                     <div class="form-floating">
-                        <input class="form-control form-control-lg" type="text" id="student_name" required
-                            th:value="${student.getStudent_name()}">
+                        <input class="form-control form-control-lg" type="text" id="student_name" name="student_name"
+                            required th:field="*{student_name}">
                         <label for="student_name">Student Name</label>
 
                     </div>
                 </div>
                 <div class="mb-3 form-floating">
-                    <input class="form-control form-control-lg" type="email" name="student_email" required
-                        th:value="${student.getEmail()}">
+                    <input class="form-control form-control-lg" type="email" name="mail" id="email" required
+                        th:field="*{email}">
                     <label for="student_email">Email Address</label>
                 </div>
 
                 <div class="mb-3 form-floating">
-                    <input class="form-control form-control-lg" type="text" name="student_address" required
-                        th:value="${student.getStudent_address()}">
+                    <input class="form-control form-control-lg" type="text" name="student_address" id="student_address"
+                        required th:field="*{student_address}">
                     <label for="student_address">Address</label>
                 </div>
 
                 <div class="mb-3 form-floating">
-                    <input class="form-control form-control-lg" type="password" id="student_password" required
-                        th:value="${student.getPassword()}">
-                    <label for="student_password">Password</label>
+                    <input class="form-control form-control-lg" type="password" id="password" name="password"
+                        th:field="*{password}">
+                    <label for="student_password">New Password</label>
                 </div>
 
                 <div class="mb-3 text-start">
