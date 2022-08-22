@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -74,8 +75,10 @@ public class studentCourse {
     {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
-
-
+        System.out.println("NEW: " + OldStud.getNewPassword());
+        System.out.println(OldStud.getPassword());
+        System.out.println(encoder.matches(OldStud.getPassword(), myUser.getPassword()));
+        System.out.println(myUser.getPassword());
         if (encoder.matches(OldStud.getPassword(), myUser.getPassword()) ) {
             //TODOOO
 
@@ -83,7 +86,11 @@ public class studentCourse {
             newStud.setEmail(OldStud.getEmail());
             newStud.setStudent_address(OldStud.getStudent_address());
             newStud.setStudent_name(OldStud.getStudent_name());
-            newStud.setPassword(encoder.encode(OldStud.getNewPassword()));
+
+            if (!OldStud.getNewPassword().isEmpty()) {
+                
+                newStud.setPassword(encoder.encode(OldStud.getNewPassword()));
+            }
 
             studService.updateStudent(newStud);
         }
@@ -140,6 +147,7 @@ public class studentCourse {
             return "test.html";
     }
    
+    @PreAuthorize("hasRole('STUDENT')")
     @GetMapping("/details")
 	public String homePage(@AuthenticationPrincipal MyUserDetails myUser,Model model) 
 	{
@@ -148,7 +156,7 @@ public class studentCourse {
         // RestTemplate restTemplate = new RestTemplate();
         // HttpHeaders headers = new HttpHeaders();
         // headers.add("Authorization", headerValue);
-      //  restTemplate.exchange(CourseUri, HttpMethod.POST, new HttpEntity<T>(createHeaders(myUser.getUsername(), myUser.getPassword())), clazz)
+        //  restTemplate.exchange(CourseUri, HttpMethod.POST, new HttpEntity<T>(createHeaders(myUser.getUsername(), myUser.getPassword())), clazz)
 
 
         // student result = restTemplate.getForObject(StudUri, student.class);

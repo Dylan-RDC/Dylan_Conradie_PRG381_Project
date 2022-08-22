@@ -34,6 +34,7 @@ public class MyUserDetails implements UserDetails {
         if (admin.class.isInstance(user)) {
             authorities.add(new SimpleGrantedAuthority("ADMIN"));
         }        
+        System.out.println(authorities.toString());
      return authorities;
     }
     

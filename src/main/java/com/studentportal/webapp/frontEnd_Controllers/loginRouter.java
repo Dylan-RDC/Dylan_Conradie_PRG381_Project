@@ -16,8 +16,28 @@ import com.studentportal.webapp.models.student;
 public class loginRouter {
     
 
-    @GetMapping("/login")
-	public String studentCourses(Model model) 
+    @GetMapping("")
+    public String viewHomePage()
+    {
+        return "home.html";
+    }
+
+
+    @GetMapping("/student/login")
+	public String studentLogIn(Model model) 
+	{
+		return "studentLogin.html";
+	}
+
+    
+    @GetMapping("/403")
+    public String error(Model model)
+    {
+        return "error403.html";
+    }
+    
+    @GetMapping("/admin/login")
+	public String adminLogIn(Model model) 
 	{
 
 
@@ -29,7 +49,7 @@ public class loginRouter {
         // admin ad = restTemplate.getForObject(adminUri, admin.class);
 		// model.addAttribute("students",result);
         // model.addAttribute("admin",ad);
-		return "login.html";
+		return "adminLogin.html";
 	}
 
 

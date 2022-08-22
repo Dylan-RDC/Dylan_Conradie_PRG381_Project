@@ -45,7 +45,11 @@
                         <i class="fa-solid fa-graduation-cap fa-xl"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown1">
-                        <li><a class="dropdown-item" href="/student/login">Log out</a></li>
+                        <li>
+                            <form th:action="@{/student/logout}" method="post"><input class="dropdown-item"
+                                    type="submit" value="Log out">
+                        </li>
+                        </form>
                         <!-- <li><a class="dropdown-item" href="#">Another action</a></li>
             <li>
               <hr class="dropdown-divider" />
@@ -122,7 +126,7 @@
                 <div class="col">
                     <div class="form-floating">
                         <input class="form-control form-control-lg" type="text" id="student_name" name="student_name"
-                            required th:field="*{student_name}">
+                            required th:field="*{student_name}" pattern="[a-zA-z]+">
                         <label for="student_name">Student Name</label>
 
                     </div>
@@ -141,13 +145,14 @@
 
                 <div class="mb-3 form-floating">
                     <input class="form-control form-control-lg" type="password" id="password" name="password"
-                        th:field="*{password}">
+                        th:field="*{password}" required>
                     <label for="student_password">Old Password</label>
                 </div>
 
                 <div class="mb-3 form-floating">
                     <input class="form-control form-control-lg" type="password" id="password" name="password"
-                        th:field="*{newPassword}">
+                        th:field="*{newPassword}" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{10,}"
+                        title="Must contain at least one number and one uppercase and lowercase letter, and at least 10 or more characters">
                     <label for="student_password">New Password</label>
                 </div>
 

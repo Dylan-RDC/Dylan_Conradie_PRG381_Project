@@ -72,23 +72,20 @@
                 <div>
                     <span class="d-flex">
                         <i class="fa-solid fa-user fa-2x"></i>
-                        <h4 class="text-primary ms-2 text-lg-start">Admin Portal Login</h4>
+                        <h4 class="text-primary ms-2 text-lg-start">Student Portal Login</h4>
                     </span>
                 </div>
             </div>
         </div>
         <hr>
         <div class="container-sm">
-            <div th:if="${param.error}">
-                <h4 style="color: red">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</h4>
-            </div>
-            <form class="row mb-3 gx-3" method="post" th:action="@{/admin/login}">
+            <form class="row mb-3 gx-3" method="post" th:action="@{/student/login}">
                 <div class="col">
                     <div th:if="${param.error}" class="invalid-feedback">First name is required!</div>
                     <div class="form-floating mb-3">
 
                         <input class="form-control form-control-lg" type="text" name="email" id="username">
-                        <label for="admin_email">Email</label>
+                        <label for="stud_email">Email</label>
                     </div>
                 </div>
 
@@ -96,7 +93,7 @@
                     <div class="form-floating">
                         <input class="form-control form-control-lg" type="password" name="password" id="password"
                             required>
-                        <label for="admin_password">Password</label>
+                        <label for="student_password">Password</label>
 
                     </div>
                 </div>
