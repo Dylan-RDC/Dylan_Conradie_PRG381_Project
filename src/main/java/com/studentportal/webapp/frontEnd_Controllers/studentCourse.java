@@ -37,7 +37,7 @@ public class studentCourse {
     courseSerivce cService;
     
     @GetMapping("/delete/course/{id}")
-    public String deleteStud(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="id") Long id)
+    public String deleteStudCourse(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="id") Long id)
     {
         student CurrentStud = (student)myUser.getUser();
         studService.removeStudentCourse(CurrentStud,id);
@@ -75,10 +75,7 @@ public class studentCourse {
     {
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
-        System.out.println("NEW: " + OldStud.getNewPassword());
-        System.out.println(OldStud.getPassword());
-        System.out.println(encoder.matches(OldStud.getPassword(), myUser.getPassword()));
-        System.out.println(myUser.getPassword());
+    
         if (encoder.matches(OldStud.getPassword(), myUser.getPassword()) ) {
             //TODOOO
 
@@ -94,6 +91,7 @@ public class studentCourse {
 
             studService.updateStudent(newStud);
         }
+
 
         
 
@@ -173,52 +171,51 @@ public class studentCourse {
 		return "StudentDetails.html";
 	}
 
-    @PostMapping("/register")
-    public String addStudent(@Validated student user, BindingResult result, Model model) {
+    // @PostMapping("/register")
+    // public String addStudent(@Validated student user, BindingResult result, Model model) {
         
-        if (result.hasErrors()) {
-            model.addAttribute("newStudent",new student());
-		    return "StudentRegistration.html";
-        }
+    //     if (result.hasErrors()) {
+    //         model.addAttribute("newStudent",new student());
+	// 	    return "StudentRegistration.html";
+    //     }
 
-        String StudUri = "http://localhost:8080/student/insert";
-        RestTemplate restTemplate = new RestTemplate();
-        System.out.println("REPO" + user);
-        HttpEntity<student> req = new HttpEntity<student>(user);
+    //     String StudUri = "http://localhost:8080/student/insert";
+    //     RestTemplate restTemplate = new RestTemplate();
+    //     System.out.println("REPO" + user);
+    //     HttpEntity<student> req = new HttpEntity<student>(user);
         
-        String response = restTemplate.postForObject(StudUri, req, String.class );
+    //     String response = restTemplate.postForObject(StudUri, req, String.class );
 
-        if (response!="Error") {
-            model.addAttribute("newStudent",user);
-            return "StudentRegistration.html";
-        }
-
-
-
-        model.addAttribute("newStudent",user);
-		return "StudentRegistration.html";
-    }
-
-    @GetMapping("/register")
-	public String register(Model model) 
-	{
-        // List<String> names = new ArrayList<String>();
-        // names.add("Dylan");
-        // names.add("cameron");
+    //     if (response!="Error") {
+    //         model.addAttribute("newStudent",user);
+    //         return "StudentRegistration.html";
+    //     }
 
 
-        // String StudUri = "http://localhost:8080/student/find/2";
-        // String CourseUri = "http://localhost:8080/course/testing";
-        // RestTemplate restTemplate = new RestTemplate();
-        // student result = restTemplate.getForObject(StudUri, student.class);
-        // Collection response = restTemplate.getForObject(CourseUri, Collection.class);
-        // List<course> courses = (List<course>) response;
-		// model.addAttribute("student",result);
-        // model.addAttribute("courses",courses);
-        model.addAttribute("newStudent",new student());
-		return "StudentRegistration.html";
-	}
 
+    //     model.addAttribute("newStudent",user);
+	// 	return "StudentRegistration.html";
+    // }
+
+    // @GetMapping("/register")
+	// public String registerForm(Model model) 
+	// {
+    //     // List<String> names = new ArrayList<String>();
+    //     // names.add("Dylan");
+    //     // names.add("cameron");
+
+
+    //     // String StudUri = "http://localhost:8080/student/find/2";
+    //     // String CourseUri = "http://localhost:8080/course/testing";
+    //     // RestTemplate restTemplate = new RestTemplate();
+    //     // student result = restTemplate.getForObject(StudUri, student.class);
+    //     // Collection response = restTemplate.getForObject(CourseUri, Collection.class);
+    //     // List<course> courses = (List<course>) response;
+	// 	// model.addAttribute("student",result);
+    //     // model.addAttribute("courses",courses);
+    //     model.addAttribute("newStudent",new student());
+	// 	return "StudentRegistration.html";
+	// }
 
 
 

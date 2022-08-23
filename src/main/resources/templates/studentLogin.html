@@ -79,6 +79,13 @@
         </div>
         <hr>
         <div class="container-sm">
+
+            <div th:if="${message!=null}">
+                <h4 class="text-lg-center" th:text="${message}"></h4>
+            </div>
+            <div th:if="${param.error}">
+                <h4 style="color: red">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</h4>
+            </div>
             <form class="row mb-3 gx-3" method="post" th:action="@{/student/login}">
                 <div class="col">
                     <div th:if="${param.error}" class="invalid-feedback">First name is required!</div>
@@ -97,11 +104,15 @@
 
                     </div>
                 </div>
+                <div class="d-grid gap-2 d-md-block text-start">
+
+                    <button class="btn btn-primary w-auto" type="submit">Log In</button>
 
 
-                <div class="mb-3 text-start">
-                    <button class="btn btn-primary" type="submit">Log In</button>
+                    <a class="btn btn-primary" type="submit" th:href="@{/register}">Register</a>
+
                 </div>
+
             </form>
         </div>
     </div>

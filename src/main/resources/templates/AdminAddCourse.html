@@ -34,6 +34,39 @@
 </head>
 
 <body>
+    <!-- ADD NEW MODAL START -->
+    <div class="modal fade" id="addNewCourseToUser" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center fw-bold">Add Course</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="add-user-form" class="p-2" method="post" th:action="@{/admin/display/addCourse}"
+                        novalidate th:object="${newCourse}">
+                        <div class="mb-3">
+
+                            <div class="form-floating mb-3">
+                                <input class="form-control form-control-lg" type="text" id="course_name"
+                                    name="course_name" th:field="*{course_name}">
+                                <label for="course_name">Course Name</label>
+                                <div class="invalid-feedback">First name is required!</div>
+
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ADD NEW MODAL END -->
+
     <!-- NavBar START -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
@@ -46,7 +79,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown1">
                         <form th:action="@{/admin/logout}" method="post"><input class="dropdown-item" type="submit"
-                                value="Log out">
+                                value="Log out"></form>
                     </ul>
                 </li>
             </ul>
@@ -57,14 +90,13 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/display/students">Home</a>
+                        <a class="nav-link" href="/admin/display/students">Students</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/admin/display/courses">Courses</a>
                     </li>
                 </ul>
             </div>
-        </div>
     </nav>
     <!-- NavBar End -->
 
@@ -79,57 +111,42 @@
                         <h4 th:text="${admin.getAdmin_name()}" class="text-primary ms-2 text-lg-start"></h4>
                     </span>
                 </div>
-
+                <div th:if="${courses.size()!=0}">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                        data-bs-target="#addNewCourseToUser">Add Course</button>
+                </div>
             </div>
         </div>
         <hr>
         <div class="row">
             <div class="col-lg-12">
-                <p class="text-center h1 text-primary ms-3">Students</p>
-                <p th:if="${updated!=null}" th:text="${'Updated student with student no: ' + updated}"
-                    class="text-success "></p>
+                <p class="text-center h1 text-primary ms-3">Courses</p>
                 <table class="table table-striped table-bordered text-center rounded">
                     <thead class="thead-dark bg-dark text-white">
 
-                        <th>Student ID</th>
-                        <th>Student Name</th>
+                        <th>Course ID</th>
+                        <th>Course Name</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
-                        <tr class="rounded" th:each="student: ${students}">
-                            <td th:text="${student.student_id}"></td>
-                            <td th:text="${student.student_name}"></td>
-                            <td><a th:href="@{'/admin/display/edit/student/' + ${student.student_id}}" class="btn
-                                btn-outline-success fw-bold rounded-pill py-0">EDIT</a>
-                                <a th:href="@{'/admin/display/delete/student/' + ${student.student_id}}" class="btn
-                                btn-danger rounded-pill py-0">DELETE</a>
+                        <tr th:if="${courses!=null}" th:each="course: ${courses}">
+                            <td th:text="${course.getCourse_id()}">User ID</td>
+                            <td th:text="${course.getCourse_name()}">User ID</td>
+                            <td><a class="btn btn-danger rounded-pill py-0"
+                                    th:href="@{'/admin/display/delete/course/' + ${course.getCourse_id()}}">REMOVE</a>
                             </td>
 
                         </tr>
-
+                        <tr th:if="${courses.size()==0}" class="text-center fs-3">
+                            <td colspan="100%">
+                                NO COURSES REGISTERED YET
+                            </td>
+                        </tr>
                     </tbody>
 
                 </table>
             </div>
         </div>
-        <!-- <h2 th:text="${'Student Name: ' + student.getStudent_name()}"></h2>
-        <table class="table table-striped table-bordered">
-            <thead class="thead-dark">
-
-                <th>Course ID</th>
-                <th>Course Name</th>
-                <th>REMOVE COURSE</th>
-            </thead>
-            <tbody>
-                <tr th:each="course: ${student.getStudentCourses()}">
-                    <td th:text="${course.getCourse_id()}">User ID</td>
-                    <td th:text="${course.getCourse_name()}">User ID</td>
-                    <td><button><a th:href="@{'/sutdent/register/' + ${name}}">view</a></td>
-                    
-                </tr>
-
-            </tbody>
-        </table> -->
     </div>
 
 </body>

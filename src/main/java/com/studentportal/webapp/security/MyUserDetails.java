@@ -28,13 +28,12 @@ public class MyUserDetails implements UserDetails {
         Set<SimpleGrantedAuthority> authorities = new HashSet<>();
 
         if (student.class.isInstance(user)) {
-            authorities.add(new SimpleGrantedAuthority("STUDENT"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_STUDENT"));
         }
 
         if (admin.class.isInstance(user)) {
-            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         }        
-        System.out.println(authorities.toString());
      return authorities;
     }
     

@@ -24,7 +24,11 @@ public class course implements Serializable {
 
     
     
-    @ManyToMany(mappedBy = "studentcourses", fetch = FetchType.EAGER)
+    @ManyToMany(cascade = { CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.LAZY)
+    @JoinTable(name = "register",
+    joinColumns = {@JoinColumn(name="course_id",nullable = false,updatable = false)},
+    inverseJoinColumns = {@JoinColumn(name="student_id",nullable = false,updatable = false)}
+    )
     List<student> enrolledstudents = new ArrayList<student>();
 
     public course() {

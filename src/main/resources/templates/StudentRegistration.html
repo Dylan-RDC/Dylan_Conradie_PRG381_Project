@@ -75,29 +75,35 @@
     </div>
     <hr>
     <div class="container-sm">
-      <form th:object="${newStudent}" class=" row mb-3 gx-3" method="post">
+      <div th:if="${param.error}">
+        <h4 style="color: red">[[${session.SPRING_SECURITY_LAST_EXCEPTION.message}]]</h4>
+      </div>
+      <form th:action="@{/register/student}" th:object="${newStudent}" class=" row mb-3 gx-3" method="post">
         <div class="form-floating mb-3">
           <input class="form-control form-control-lg" type="text" id="student_name" th:field="*{student_name}" required>
           <label for="student_name">Student Name</label>
 
         </div>
         <div class="mb-3 form-floating">
-          <input class="form-control form-control-lg" type="email" name="student_email" required>
+          <input class="form-control form-control-lg" type="email" name="student_email" th:field="*{email}" required>
           <label for="student_email">Email Address</label>
         </div>
 
         <div class="mb-3 form-floating">
-          <input class="form-control form-control-lg" type="text" name="student_address" required>
+          <input class="form-control form-control-lg" type="text" name="student_address" th:field="*{student_address}"
+            required>
           <label for="student_address">Address</label>
         </div>
 
         <div class="mb-3 form-floating">
-          <input class="form-control form-control-lg" type="password" id="student_password" required>
+          <input class="form-control form-control-lg" type="password" id="student_password" th:field="*{password}"
+            required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{10,}"
+            title="Must contain at least one number and one uppercase and lowercase letter, and at least 10 or more characters">
           <label for="student_password">Password</label>
         </div>
 
         <div class="mb-3 text-start">
-          <button class="btn btn-primary" type="submit">Update Details</button>
+          <button class="btn btn-primary" type="submit">Register</button>
         </div>
       </form>
     </div>

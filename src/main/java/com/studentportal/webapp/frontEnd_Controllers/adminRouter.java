@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import com.studentportal.webapp.models.admin;
+import com.studentportal.webapp.models.course;
 import com.studentportal.webapp.models.student;
 import com.studentportal.webapp.security.MyUserDetails;
 import com.studentportal.webapp.service.courseSerivce;
@@ -80,7 +81,49 @@ public class adminRouter {
 
             return "AdminHome.html";
 
-		// return "redirect:http://localhost:8080/admin/display/students";
 	}
+
+    @GetMapping("/courses")
+    public String adminCourses(@AuthenticationPrincipal MyUserDetails myUser,Model model)
+    {
+        admin CurrentAdmin = (admin)myUser.getUser();
+        List<course> courses = cService.getAllCourses();
+
+        model.addAttribute("admin",CurrentAdmin);
+        model.addAttribute("courses", courses);
+        model.addAttribute("newCourse", new course());
+        return "AdminAddCourse.html";
+    }
+
+    @GetMapping("/delete/course/{course_id}")
+    public String deleteCourse(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="course_id") Long course_id) {
+        System.out.println(course_id);
+        cService.deleteCourseByID(course_id);
+
+        return "redirect:http://localhost:8080/admin/display/courses";
+
+    }
+
+    @GetMapping("/delete/student/{student_id}")
+    public String deleteStudent(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="student_id") Long student_id) {
+        
+        studService.deleteStudent(student_id);
+
+        return "redirect:http://localhost:8080/admin/display/students";
+
+    }
+
+    @PostMapping("/addCourse")
+    public String addCourse(@AuthenticationPrincipal MyUserDetails myUser,@Validated @ModelAttribute("newCourse") course newCourse,Model model) {
+        admin CurrentAdmin = (admin)myUser.getUser();
+        
+        cService.addCourse(newCourse);
+
+        
+        
+
+        return "redirect:http://localhost:8080/admin/display/courses";
+
+    }
 
 }

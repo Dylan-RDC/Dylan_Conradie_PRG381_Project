@@ -74,7 +74,8 @@
                         <i class="fa-solid fa-graduation-cap fa-xl"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown1">
-                        <li><a class="dropdown-item" href="/admin/display/login">Log out</a></li>
+                        <form th:action="@{/admin/logout}" method="post"><input class="dropdown-item" type="submit"
+                                value="Log out"></form>
                         <!-- <li><a class="dropdown-item" href="#">Another action</a></li>
             <li>
               <hr class="dropdown-divider" />
@@ -92,7 +93,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link" href="/admin/display/students">Home</a>
+                        <a class="nav-link" href="/admin/display/students">Students</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/admin/display/courses">Courses</a>
                     </li>
                 </ul>
                 <!-- <ul class="navbar-nav d-flex flex-row ms-auto me-3">
@@ -147,7 +151,7 @@
                 </div>
 
                 <div class="col">
-                    <div class="form-floating">
+                    <div class="mb-3 form-floating">
                         <input class="form-control form-control-lg" type="text" id="student_name" name="student_name"
                             required th:field="*{student_name}">
                         <label for="student_name">Student Name</label>

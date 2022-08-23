@@ -39,9 +39,10 @@ public class StudentSecurityConfig {
         http.authorizeRequests().antMatchers("/").permitAll();
         http.authorizeRequests().antMatchers("/student/login").permitAll();
         http.authorizeRequests().antMatchers("/admin/login").permitAll();
+        // http.authorizeRequests().antMatchers("/register").permitAll();
         http.authenticationProvider(studentAuthenticationProvider());
 
-        http.antMatcher("/student/**").authorizeRequests().anyRequest().hasAuthority("STUDENT")
+        http.antMatcher("/student/**").authorizeRequests().anyRequest().hasRole("STUDENT")
         .and()
             .formLogin()
                 .loginPage("/student/login")
@@ -55,7 +56,10 @@ public class StudentSecurityConfig {
                 .logoutSuccessUrl("/")
                 .and()
                 .logout().logoutUrl("/student/logout")
-                .logoutSuccessUrl("/");
+                .logoutSuccessUrl("/")
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/403");
            
 
         return http.build();

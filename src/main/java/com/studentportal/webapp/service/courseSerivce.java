@@ -22,6 +22,19 @@ public class courseSerivce {
         return courseRep.findAll();
     }
 
+    public String addCourse(course newCourse) {
+
+        try {
+            
+            newCourse = courseRep.save(newCourse);
+    
+            return String.format("New student has been added into Database, student number: %d",newCourse.getCourse_id() );
+        } catch (Exception e) {
+            return "FAILED";
+        }
+
+    } 
+
     public List<student> getCourseStudents(Long course_id )
     {
         List<student> studList = courseRep.getCourseStudents(course_id);
@@ -31,6 +44,17 @@ public class courseSerivce {
     public course getCourseByID(Long course_id)
     {
         return courseRep.getReferenceById(course_id);
+    }
+
+    public String deleteCourseByID(Long course_id)
+    {
+        try {
+            courseRep.deleteById(course_id);
+            return "Successfully deleted";
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return e.getMessage();
+        }
     }
 
 }
