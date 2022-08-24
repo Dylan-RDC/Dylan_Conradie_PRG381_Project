@@ -3,16 +3,23 @@ package com.studentportal.webapp.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.studentportal.webapp.models.course;
 import com.studentportal.webapp.models.student;
+import com.studentportal.webapp.repo.courseRepo;
 import com.studentportal.webapp.repo.studentRepo;
 
 @Service
+@Transactional
 public class studentService {
+
+    @Autowired
+    courseRepo cRepo;
     
     @Autowired
     studentRepo studRepo;
@@ -94,10 +101,29 @@ public class studentService {
 
     }
 
-    public boolean removeStudentCourse(student stud,Long course_id)
+
+
+    public boolean addStudentCourse(Long stud_id,Long course_id)
     {
         try {
-            
+            student stud = studRepo.getReferenceById(stud_id);
+            course nC = cRepo.getReferenceById(course_id);
+            if (nC!=null) {
+                stud.addStudentCourse(nC);
+                studRepo.save(stud);
+                
+            } 
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+       
+    }
+
+    public boolean removeStudentCourse(Long stud_id,Long course_id)
+    {
+        try {
+            student stud = studRepo.getReferenceById(stud_id);
             List<course> courses = stud.getStudentCourses();
             List<course> newCourses = new ArrayList<>();
             for (course c : courses) {

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity 
 @Table(name= "course", uniqueConstraints =  @UniqueConstraint(columnNames = {"course_name"}))
-
 public class course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +23,7 @@ public class course implements Serializable {
 
     
     
-    @ManyToMany(cascade = { CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.LAZY)
-    @JoinTable(name = "register",
-    joinColumns = {@JoinColumn(name="course_id",nullable = false,updatable = false)},
-    inverseJoinColumns = {@JoinColumn(name="student_id",nullable = false,updatable = false)}
-    )
+    @ManyToMany(mappedBy = "studentcourses",fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     List<student> enrolledstudents = new ArrayList<student>();
 
     public course() {

@@ -2,6 +2,8 @@ package com.studentportal.webapp.service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +11,7 @@ import com.studentportal.webapp.models.admin;
 import com.studentportal.webapp.repo.adminRepo;
 
 @Service
+@Transactional
 public class adminService {
     
     @Autowired
