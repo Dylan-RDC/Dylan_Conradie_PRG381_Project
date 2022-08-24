@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import com.studentportal.webapp.models.admin;
 import com.studentportal.webapp.models.course;
@@ -97,7 +96,7 @@ public class adminRouter {
 
     @GetMapping("/delete/course/{course_id}")
     public String deleteCourse(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="course_id") Long course_id) {
-        System.out.println(course_id);
+
         cService.deleteCourseByID(course_id);
 
         return "redirect:http://localhost:8080/admin/display/courses";
@@ -115,7 +114,7 @@ public class adminRouter {
 
     @PostMapping("/addCourse")
     public String addCourse(@AuthenticationPrincipal MyUserDetails myUser,@Validated @ModelAttribute("newCourse") course newCourse,Model model) {
-        admin CurrentAdmin = (admin)myUser.getUser();
+     
         
         cService.addCourse(newCourse);
 

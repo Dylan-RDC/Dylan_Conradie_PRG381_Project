@@ -1,15 +1,14 @@
 package com.studentportal.webapp.frontEnd_Controllers;
 
-import java.util.*;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
-import com.studentportal.webapp.models.admin;
+
 import com.studentportal.webapp.models.student;
 import com.studentportal.webapp.service.studentService;
 

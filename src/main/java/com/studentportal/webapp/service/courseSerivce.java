@@ -55,7 +55,6 @@ public class courseSerivce {
             courseRep.deleteById(course_id);
             return "Successfully deleted";
         } catch (Exception e) {
-            System.out.println(e.getMessage());
             return e.getMessage();
         }
     }

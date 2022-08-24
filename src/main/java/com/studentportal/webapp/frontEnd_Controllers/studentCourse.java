@@ -2,25 +2,22 @@ package com.studentportal.webapp.frontEnd_Controllers;
 
 import java.util.*;
 
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
 
-import com.studentportal.webapp.models.Iuser;
+
 import com.studentportal.webapp.models.course;
 import com.studentportal.webapp.models.student;
+
 import com.studentportal.webapp.security.MyUserDetails;
 import com.studentportal.webapp.service.courseSerivce;
 import com.studentportal.webapp.service.studentService;
@@ -40,33 +37,28 @@ public class studentCourse {
     public String deleteStudCourse(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="id") Long id)
     {
         student CurrentStud = (student)myUser.getUser();
-        studService.removeStudentCourse(CurrentStud,id);
-       
+        studService.removeStudentCourse(CurrentStud.getStudent_id(),id);
 
-		model.addAttribute("student",CurrentStud);
-        model.addAttribute("courses",CurrentStud.getStudentCourses());
+        CurrentStud.setStudCourse(studService.getStudent(CurrentStud.getStudent_id()).getStudentCourses());
+
+		// model.addAttribute("student",CurrentStud);
+        // model.addAttribute("courses",CurrentStud.getStudentCourses());
 		return "redirect:http://localhost:8080/student/display/courses";
 	}
+ 
+    
 
-
-      
     @PostMapping("/addCourse")
     public String addCourse(@AuthenticationPrincipal MyUserDetails myUser,@Validated @ModelAttribute("newCourse") course newCourse,Model model)
     {
-        student CurrentStud = (student)myUser.getUser();
-        List<course> temp = CurrentStud.getStudentCourses();
-        boolean found = false;
-        for (course c : temp) {
-            if (c.getCourse_id()==newCourse.getCourse_id()) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            CurrentStud.addStudentCourse(newCourse);
-            studService.updateStudent(CurrentStud);
-        }
 
+        student CurrentStud = (student)myUser.getUser();
+        // System.out.println(newCourse.getCourse_id());
+        // course nC = cService.getCourseByID(newCourse.getCourse_id());
+        // CurrentStud.addStudentCourse(nC);
+        // studService.updateStudent(CurrentStud);
+         studService.addStudentCourse(CurrentStud.getStudent_id(), newCourse.getCourse_id());
+         CurrentStud.setStudCourse(studService.getStudent(CurrentStud.getStudent_id()).getStudentCourses());
 		return "redirect:http://localhost:8080/student/display/courses";
 	}
 
@@ -101,21 +93,18 @@ public class studentCourse {
     @GetMapping("/courses")
 	public String studentCourses(@AuthenticationPrincipal MyUserDetails myUser,Model model) 
 	{
-        student CurrentStud = studService.getStudent(((student)myUser.getUser()).getStudent_id());
+        Long CurrentStud_id = ((student) myUser.getUser()).getStudent_id();
+        student CurrentStud = studService.getStudent(CurrentStud_id);
+
+
+
+        // student CurrentStud = studService.getStudent(((student)myUser.getUser()).getStudent_id());
         List<course> course = cService.getAllCourses();
-        // String StudUri = "http://localhost:8080/student/find/2";
-        // String CourseUri = "http://localhost:8080/course/testing";
-        // RestTemplate restTemplate = new RestTemplate();
-        // student result = restTemplate.getForObject(StudUri, student.class);
-        // Collection response = restTemplate.getForObject(CourseUri, Collection.class);
-        // List<course> courses = (List<course>) response;
-        // System.out.println(courses);
         List<course> filtered = new ArrayList<>();
 
         for (course c : course) {
             boolean found = false;
             for (course studc : CurrentStud.getStudentCourses()) {
-                
                 if (c.getCourse_id()==studc.getCourse_id()) {
                     found = true;
                     break;

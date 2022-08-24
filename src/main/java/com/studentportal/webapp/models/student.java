@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.springframework.lang.Nullable;
+
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -65,8 +65,8 @@ public class student implements Serializable, Iuser{
 
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH},fetch = FetchType.LAZY)
     @JoinTable(name = "register",
-    joinColumns = {@JoinColumn(name="student_id",nullable = false,updatable = false)},
-    inverseJoinColumns = {@JoinColumn(name="course_id",nullable = false,updatable = false)}
+    joinColumns = {@JoinColumn(name="student_id")},
+    inverseJoinColumns = {@JoinColumn(name="course_id")}
     )
      List<course> studentcourses = new ArrayList<course>();
 
