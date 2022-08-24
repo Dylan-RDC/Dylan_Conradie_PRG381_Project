@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.studentportal.webapp.models.course;
@@ -12,6 +14,7 @@ import com.studentportal.webapp.repo.courseRepo;
 
 
 @Service
+@Transactional
 public class courseSerivce {
     
     @Autowired
