@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.annotations.SortType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.studentportal.webapp.models.course;
@@ -29,10 +30,20 @@ public class courseSerivce {
 
         try {
             
-            newCourse = courseRep.save(newCourse);
-    
-            return String.format("New student has been added into Database, student number: %d",newCourse.getCourse_id() );
+            if (courseRep.getCourseByName(newCourse.getCourse_name())!=null) {
+                return "Course Name already in use";
+            }
+
+            else
+            {
+
+                newCourse = courseRep.save(newCourse);
+        
+                return String.format("New Course has been added into Database, student number: %d",newCourse.getCourse_id() );
+            }
+
         } catch (Exception e) {
+            System.out.println("FAILED");
             return "FAILED";
         }
 

@@ -2,12 +2,15 @@ package com.studentportal.webapp.frontEnd_Controllers;
 
 
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.servlet.ModelAndView;
 
 import com.studentportal.webapp.models.student;
 import com.studentportal.webapp.service.studentService;
@@ -21,20 +24,22 @@ public class loginRouter {
     studentService studService;
 
     @PostMapping("/register/student")
-    public String registerStudent(@Validated @ModelAttribute("newStudent") student newStudent,Model model)
+    public ModelAndView registerStudent(@Validated @ModelAttribute("newStudent") student newStudent,Model model,ModelMap map)
     {
         try {
             if (studService.addStudent(newStudent)!="FAILED") {
-                model.addAttribute("message",String.format("Successfully Registered"));
+                map.addAttribute("message","Successfully Registered");
+                return new ModelAndView("redirect:/student/login", map);
             } 
             else
             {
-                model.addAttribute("message",String.format("Registration failed"));
+                map.addAttribute("message","User already exists with the given Email");
+                return new ModelAndView("redirect:/register", map);
             }
         } catch (Exception e) {
-            model.addAttribute("message",String.format("Registration failed"));
+            map.addAttribute("message","An error occurred");
+            return new ModelAndView("redirect:/register", map);
         }
-        return "studentLogin.html";
     }
 
     @GetMapping("")
@@ -45,37 +50,31 @@ public class loginRouter {
 
 
     @GetMapping("/student/login")
-	public String studentLogIn(Model model) 
+	public String studentLogIn(Model model,@RequestParam("message") Optional<String> message) 
 	{
+    
+
+        if ( message.isPresent()) {
+            model.addAttribute("message",message.get());
+        }
+
 		return "studentLogin.html";
 	}
 
     
-    @GetMapping("/403")
-    public String error(Model model)
-    {
-        return "error403.html";
-    }
-    
     @GetMapping("/admin/login")
 	public String adminLogIn(Model model) 
 	{
-
-
-        // String StudUri = "http://localhost:8080/student/testing";
-        // String adminUri = "http://localhost:8080/admin/find/2";
-        // RestTemplate restTemplate = new RestTemplate();
-        // Collection result = restTemplate.getForObject(StudUri, Collection.class);
-        // List<student> students = (List<student>) result;
-        // admin ad = restTemplate.getForObject(adminUri, admin.class);
-		// model.addAttribute("students",result);
-        // model.addAttribute("admin",ad);
 		return "adminLogin.html";
 	}
 
     @GetMapping("/register")
-    public String getRegistration(Model model)
+    public String getRegistration(Model model,@RequestParam("message") Optional<String> message)
     {
+        if ( message.isPresent()) {
+            model.addAttribute("message",message.get());
+        }
+    
         model.addAttribute("newStudent", new student());
         return "StudentRegistration.html";
     }

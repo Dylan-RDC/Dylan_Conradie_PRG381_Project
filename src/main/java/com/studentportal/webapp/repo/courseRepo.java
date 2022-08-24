@@ -16,5 +16,6 @@ public interface courseRepo extends JpaRepository<course, Long>{
     @Query(value = "SELECT s.* FROM student s INNER JOIN register r ON  s.student_id = r.student_id INNER JOIN course c ON c.course_id = r.course_id WHERE c.course_id = ?1",nativeQuery = true)
     public List<student> getCourseStudents(@Param("course_id") Long course_id); 
 
-    
+    @Query(value = "SELECT c.* FROM course c  WHERE c.course_name = ?1",nativeQuery = true)
+    public course getCourseByName(@Param("course_name") String course_name); 
 }

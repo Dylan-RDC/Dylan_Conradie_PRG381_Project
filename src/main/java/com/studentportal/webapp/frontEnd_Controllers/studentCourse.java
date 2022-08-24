@@ -82,12 +82,13 @@ public class studentCourse {
             }
 
             studService.updateStudent(newStud);
+            return String.format("redirect:/student/display/details?status=%s", "Successfully Updated Details");
         }
+        else
+        {
+            return String.format("redirect:/student/display/details?status=%s", "Incorrect Credentials");
+        }  
 
-
-        
-
-		return "redirect:http://localhost:8080/student/display/details";
 	}
 
     @GetMapping("/courses")
@@ -134,9 +135,8 @@ public class studentCourse {
             return "test.html";
     }
    
-    @PreAuthorize("hasRole('STUDENT')")
     @GetMapping("/details")
-	public String homePage(@AuthenticationPrincipal MyUserDetails myUser,Model model) 
+	public String homePage(@RequestParam("status") Optional<String> status, @AuthenticationPrincipal MyUserDetails myUser,Model model) 
 	{
         // String StudUri = "http://localhost:8080/student/find/2";
         // String CourseUri = "http://localhost:8080/course/testing";
@@ -152,42 +152,25 @@ public class studentCourse {
         // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         student CurrentStud = (student)myUser.getUser();
 
+        if (status.isPresent()) {
+            String message = status.get();
+
+            if (message.equalsIgnoreCase("Successfully Updated Details")) {
+                model.addAttribute("success", status.get());
+            }
+            else
+            {
+                model.addAttribute("error", status.get());
+
+            }
+        }
+
         
-        
-    
 		model.addAttribute("student",(CurrentStud));
         model.addAttribute("courses",(CurrentStud.getStudentCourses()));
 		return "StudentDetails.html";
 	}
 
-    // @PostMapping("/register")
-    // public String addStudent(@Validated student user, BindingResult result, Model model) {
-        
-    //     if (result.hasErrors()) {
-    //         model.addAttribute("newStudent",new student());
-	// 	    return "StudentRegistration.html";
-    //     }
-
-    //     String StudUri = "http://localhost:8080/student/insert";
-    //     RestTemplate restTemplate = new RestTemplate();
-    //     System.out.println("REPO" + user);
-    //     HttpEntity<student> req = new HttpEntity<student>(user);
-        
-    //     String response = restTemplate.postForObject(StudUri, req, String.class );
-
-    //     if (response!="Error") {
-    //         model.addAttribute("newStudent",user);
-    //         return "StudentRegistration.html";
-    //     }
-
-
-
-    //     model.addAttribute("newStudent",user);
-	// 	return "StudentRegistration.html";
-    // }
-
-    // @GetMapping("/register")
-	// public String registerForm(Model model) 
 	// {
     //     // List<String> names = new ArrayList<String>();
     //     // names.add("Dylan");
@@ -205,7 +188,5 @@ public class studentCourse {
     //     model.addAttribute("newStudent",new student());
 	// 	return "StudentRegistration.html";
 	// }
-
-
 
 }

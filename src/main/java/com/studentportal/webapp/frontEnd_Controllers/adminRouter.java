@@ -74,6 +74,8 @@ public class adminRouter {
             List<student> studs = studService.getAllStudents();
             String updated = String.format("%d", newStud.getStudent_id());
 
+
+            
             model.addAttribute("updated", updated);
             model.addAttribute("students",studs);
             model.addAttribute("admin",CurrentAdmin);
@@ -99,7 +101,7 @@ public class adminRouter {
 
         cService.deleteCourseByID(course_id);
 
-        return "redirect:http://localhost:8080/admin/display/courses";
+        return "redirect:/admin/display/courses";
 
     }
 
@@ -108,7 +110,7 @@ public class adminRouter {
         
         studService.deleteStudent(student_id);
 
-        return "redirect:http://localhost:8080/admin/display/students";
+        return "redirect:/admin/display/students";
 
     }
 
@@ -117,11 +119,7 @@ public class adminRouter {
      
         
         cService.addCourse(newCourse);
-
-        
-        
-
-        return "redirect:http://localhost:8080/admin/display/courses";
+        return "redirect:/admin/display/courses";
 
     }
 
