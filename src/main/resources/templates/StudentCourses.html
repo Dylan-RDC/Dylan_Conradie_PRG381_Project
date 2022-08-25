@@ -80,13 +80,7 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown1">
                         <form th:action="@{/student/logout}" method="post"><input class="dropdown-item" type="submit"
                                 value="Log out"></form>
-                        <!-- <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li>
-              <hr class="dropdown-divider" />
-            </li>
-            <li>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </li> -->
+
                     </ul>
                 </li>
             </ul>
@@ -103,25 +97,7 @@
                         <a class="nav-link" href="/student/display/details">User Details</a>
                     </li>
                 </ul>
-                <!-- <ul class="navbar-nav d-flex flex-row ms-auto me-3">
-          </li>
-          <li class="nav-item me-3 dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" type="button" data-mdb-toggle="dropdown"
-              aria-expanded="false">
-              <i class="fa-solid fa-user"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown1">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li>
-                <hr class="dropdown-divider" />
-              </li>
-              <li>
-                <a class="dropdown-item" href="#">Something else here</a>
-              </li>
-            </ul>
-          </li>
-        </ul> -->
+
             </div>
         </div>
     </nav>
@@ -174,24 +150,7 @@
                 </table>
             </div>
         </div>
-        <!-- <h2 th:text=" ${'Student Name: ' + student.getStudent_name()}"></h2>
-        <table class="table table-striped table-bordered">
-            <thead class="thead-dark">
 
-                <th>Course ID</th>
-                <th>Course Name</th>
-                <th>REMOVE COURSE</th>
-            </thead>
-            <tbody>
-                <tr th:each="course: ${student.getStudentCourses()}">
-                    <td th:text="${course.getCourse_id()}">User ID</td>
-                    <td th:text="${course.getCourse_name()}">User ID</td>
-                    <td><button><a th:href="@{' /sutdent/register/' + ${name}}">view</a></td>
-
-                        </tr>
-
-                    </tbody>
-                </table> -->
     </div>
 
 </body>

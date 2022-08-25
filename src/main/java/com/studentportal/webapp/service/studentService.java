@@ -68,6 +68,7 @@ public class studentService {
         }
     }
 
+
     public student getStudent(Long stud_id)
     {
         try {
