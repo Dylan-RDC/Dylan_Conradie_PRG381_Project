@@ -1,6 +1,8 @@
 package com.studentportal.webapp.frontEnd_Controllers;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -29,11 +31,16 @@ public class adminRouter {
     courseSerivce cService;
 
     @GetMapping("/students")
-	public String studentCourses(@AuthenticationPrincipal MyUserDetails myUser, Model model) 
+	public String studentCourses(@RequestParam("updated") Optional<String> updated,@AuthenticationPrincipal MyUserDetails myUser, Model model) 
 	{
 
         List<student> students = studService.getAllStudents();
         admin CurrentAdmin = (admin)myUser.getUser();
+
+        if (updated.isPresent()) {
+            model.addAttribute("updated", updated.get());
+        }
+
 		model.addAttribute("students",students);
         model.addAttribute("admin",CurrentAdmin);
 		return "AdminHome.html";
@@ -58,37 +65,45 @@ public class adminRouter {
 
 
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
-            //TODOOO
+        
             admin CurrentAdmin = (admin)myUser.getUser();
 
             student newStud = studService.getStudent(OldStud.getStudent_id());
             newStud.setEmail(OldStud.getEmail());
             newStud.setStudent_address(OldStud.getStudent_address());
             newStud.setStudent_name(OldStud.getStudent_name());
+            String newP = OldStud.getPassword();
+            if (!newP.isBlank()) {
 
-            if (!OldStud.getPassword().isBlank()) {
-                newStud.setPassword(encoder.encode(OldStud.getPassword()));
+                Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{10,}");
+                Matcher matcher = pattern.matcher(newP);
+                if (matcher.matches()) {
+                    newStud.setPassword(encoder.encode(OldStud.getPassword()));
+                    studService.updateStudent(newStud);
+                }
+                else
+                {
+                    model.addAttribute("student",newStud);
+                    model.addAttribute("error","Password is not correctly formatted");
+                    model.addAttribute("admin",CurrentAdmin);
+                    return "AdminEditStudent.html"; 
+                }
             }
             
-            studService.updateStudent(newStud);
-            List<student> studs = studService.getAllStudents();
-            String updated = String.format("%d", newStud.getStudent_id());
 
-
-            
-            model.addAttribute("updated", updated);
-            model.addAttribute("students",studs);
-            model.addAttribute("admin",CurrentAdmin);
-
-            return "AdminHome.html";
+            return String.format("redirect:/admin/display/students?updated=%s", newStud.getStudent_id()); 
 
 	}
 
     @GetMapping("/courses")
-    public String adminCourses(@AuthenticationPrincipal MyUserDetails myUser,Model model)
+    public String adminCourses(@RequestParam("error") Optional<String> error,@AuthenticationPrincipal MyUserDetails myUser,Model model)
     {
         admin CurrentAdmin = (admin)myUser.getUser();
         List<course> courses = cService.getAllCourses();
+
+        if (error.isPresent()) {
+            model.addAttribute("error", error.get());
+        }
 
         model.addAttribute("admin",CurrentAdmin);
         model.addAttribute("courses", courses);
@@ -117,9 +132,19 @@ public class adminRouter {
     @PostMapping("/addCourse")
     public String addCourse(@AuthenticationPrincipal MyUserDetails myUser,@Validated @ModelAttribute("newCourse") course newCourse,Model model) {
      
+        try {
+            if (cService.addCourse(newCourse).equalsIgnoreCase("failed")) {
+                return String.format("redirect:/admin/display/courses?error=Course with name: %s already exists", newCourse.getCourse_name());
+            } 
+            
+            return String.format("redirect:/admin/display/courses");
+        } catch (Exception e) {
+            //TODO: handle exception
+            
+            return String.format("redirect:/admin/display/courses?error=%s", "Failed to add Course");
+        }
+      
         
-        cService.addCourse(newCourse);
-        return "redirect:/admin/display/courses";
 
     }
 

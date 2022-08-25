@@ -1,7 +1,8 @@
 package com.studentportal.webapp.frontEnd_Controllers;
 
 import java.util.*;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,6 +22,8 @@ import com.studentportal.webapp.models.student;
 import com.studentportal.webapp.security.MyUserDetails;
 import com.studentportal.webapp.service.courseSerivce;
 import com.studentportal.webapp.service.studentService;
+
+
 
 
 @Controller
@@ -75,10 +78,18 @@ public class studentCourse {
             newStud.setEmail(OldStud.getEmail());
             newStud.setStudent_address(OldStud.getStudent_address());
             newStud.setStudent_name(OldStud.getStudent_name());
-
-            if (!OldStud.getNewPassword().isEmpty()) {
+            String newP;
+            if (!(newP = OldStud.getNewPassword()).isEmpty()) {
                 
-                newStud.setPassword(encoder.encode(OldStud.getNewPassword()));
+                Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{10,}");
+                Matcher matcher = pattern.matcher(newP);
+                if (matcher.matches()) {
+                    newStud.setPassword(encoder.encode(OldStud.getNewPassword()));
+                }
+                else
+                {
+                    return String.format("redirect:/student/display/details?status=%s", "Password was not correctly formatted");  
+                }
             }
 
             studService.updateStudent(newStud);
@@ -138,18 +149,6 @@ public class studentCourse {
     @GetMapping("/details")
 	public String homePage(@RequestParam("status") Optional<String> status, @AuthenticationPrincipal MyUserDetails myUser,Model model) 
 	{
-        // String StudUri = "http://localhost:8080/student/find/2";
-        // String CourseUri = "http://localhost:8080/course/testing";
-        // RestTemplate restTemplate = new RestTemplate();
-        // HttpHeaders headers = new HttpHeaders();
-        // headers.add("Authorization", headerValue);
-        //  restTemplate.exchange(CourseUri, HttpMethod.POST, new HttpEntity<T>(createHeaders(myUser.getUsername(), myUser.getPassword())), clazz)
-
-
-        // student result = restTemplate.getForObject(StudUri, student.class);
-        // Collection response = restTemplate.getForObject(CourseUri, Collection.class);
-        // List<course> courses = (List<course>) response;
-        // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         student CurrentStud = (student)myUser.getUser();
 
         if (status.isPresent()) {
@@ -171,22 +170,6 @@ public class studentCourse {
 		return "StudentDetails.html";
 	}
 
-	// {
-    //     // List<String> names = new ArrayList<String>();
-    //     // names.add("Dylan");
-    //     // names.add("cameron");
 
-
-    //     // String StudUri = "http://localhost:8080/student/find/2";
-    //     // String CourseUri = "http://localhost:8080/course/testing";
-    //     // RestTemplate restTemplate = new RestTemplate();
-    //     // student result = restTemplate.getForObject(StudUri, student.class);
-    //     // Collection response = restTemplate.getForObject(CourseUri, Collection.class);
-    //     // List<course> courses = (List<course>) response;
-	// 	// model.addAttribute("student",result);
-    //     // model.addAttribute("courses",courses);
-    //     model.addAttribute("newStudent",new student());
-	// 	return "StudentRegistration.html";
-	// }
 
 }

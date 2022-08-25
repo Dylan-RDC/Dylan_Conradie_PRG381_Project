@@ -1,6 +1,7 @@
 package com.studentportal.webapp.service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -92,6 +93,7 @@ public class studentService {
     {
         try {
             List<course> studList = studRepo.getStudentCourses(student_id);
+            Collections.sort(studList);
             return studList;
             
         } catch (Exception e) {

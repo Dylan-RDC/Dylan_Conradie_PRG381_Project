@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity 
 @Table(name= "course", uniqueConstraints =  @UniqueConstraint(columnNames = {"course_name"}))
-public class course implements Serializable {
+public class course implements Serializable, Comparable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
@@ -20,6 +20,7 @@ public class course implements Serializable {
 
     @Column(name = "course_name")
     private String course_name;
+
 
     
     
@@ -78,5 +79,11 @@ public class course implements Serializable {
     public void addEnrolledStudent(student newStudent) {
         getEnrolledStudents().add(newStudent);
         newStudent.getStudentCourses().add(this);
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        course c = (course) o;
+        return this.getCourse_name().compareTo(c.getCourse_name());
     }   
 }

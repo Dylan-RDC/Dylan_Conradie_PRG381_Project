@@ -118,6 +118,9 @@
             </div>
         </div>
         <hr>
+        <div th:if="${error!=null}" class="alert alert-danger d-flex align-items-center" role="alert">
+            <h4 class="text-lg-center" th:text="${error}"></h4>
+        </div>
         <div class="row">
             <div class="col-lg-12">
                 <p class="text-center h1 text-primary ms-3">Courses</p>

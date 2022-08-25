@@ -2,6 +2,8 @@ package com.studentportal.webapp.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -23,7 +25,9 @@ public class courseSerivce {
 
     public List<course> getAllCourses()
     {
-        return courseRep.findAll();
+        List<course> courses = courseRep.findAll();
+        Collections.sort(courses);
+        return courses;
     }
 
     public String addCourse(course newCourse) {

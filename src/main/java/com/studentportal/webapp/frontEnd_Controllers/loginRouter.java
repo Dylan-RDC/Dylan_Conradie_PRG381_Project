@@ -37,7 +37,7 @@ public class loginRouter {
                 return new ModelAndView("redirect:/register", map);
             }
         } catch (Exception e) {
-            map.addAttribute("message","An error occurred");
+            map.addAttribute("message","A user with that email already exists");
             return new ModelAndView("redirect:/register", map);
         }
     }
