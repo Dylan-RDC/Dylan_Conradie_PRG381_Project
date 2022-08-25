@@ -40,9 +40,8 @@ public class adminRouter {
         if (updated.isPresent()) {
             String status = updated.get();
             
-            if (status.equalsIgnoreCase("Failed to add student")) {
+            if (status.equalsIgnoreCase("Failed to add student") || status.equalsIgnoreCase("Failed to add student password was not of correct format")) {
                 model.addAttribute("error", updated.get());
-                System.out.println(status);
             }
             else
             {
@@ -64,6 +63,11 @@ public class adminRouter {
 
         try {
 
+            Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{10,}");
+            Matcher matcher = pattern.matcher(newStud.getPassword());
+            if (!matcher.matches()) {
+                return String.format("redirect:/admin/display/students?updated=%s", "Failed to add student password was not of correct format"); 
+            }
             if (studService.addStudent(newStud).equalsIgnoreCase("failed")) {
                 return  String.format("redirect:/admin/display/students?updated=%s", "Failed to add student") ;
             }
