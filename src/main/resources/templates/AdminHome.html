@@ -34,6 +34,56 @@
 </head>
 
 <body>
+
+    <!-- ADD NEW MODAL START -->
+    <div class="modal fade" id="addNewStudent" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center fw-bold">Add Module</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/admin/display/register/student}" th:object="${newStudent}"
+                        class=" row mb-3 gx-3" method="post">
+                        <div class="form-floating mb-3">
+                            <input class="form-control form-control-lg" type="text" id="student_name"
+                                th:field="*{student_name}" required>
+                            <label for="student_name">Student Name</label>
+
+                        </div>
+                        <div class="mb-3 form-floating">
+                            <input class="form-control form-control-lg" type="email" name="student_email"
+                                th:field="*{email}" required>
+                            <label for="student_email">Email Address</label>
+                        </div>
+
+                        <div class="mb-3 form-floating">
+                            <input class="form-control form-control-lg" type="text" name="student_address"
+                                th:field="*{student_address}" required>
+                            <label for="student_address">Address</label>
+                        </div>
+
+                        <div class="mb-3 form-floating">
+                            <input class="form-control form-control-lg" type="password" id="student_password"
+                                th:field="*{password}" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{10,}"
+                                title="Must contain at least one number and one uppercase and lowercase letter, and at least 10 or more characters">
+                            <label for="student_password">Password</label>
+                        </div>
+
+
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" type="submit">Register</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- ADD NEW MODAL END -->
+
     <!-- NavBar START -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
@@ -79,6 +129,10 @@
                         <h4 th:text="${admin.getAdmin_name()}" class="text-primary ms-2 text-lg-start"></h4>
                     </span>
                 </div>
+                <div>
+                    <button class="btn btn-primary" type="button" data-bs-toggle="modal"
+                        data-bs-target="#addNewStudent">Add Student</button>
+                </div>
 
             </div>
         </div>
@@ -86,6 +140,10 @@
         <div class="row">
             <div class="col-lg-12">
                 <p class="text-center h1 text-primary ms-3">Students</p>
+
+                <div th:if="${error!=null}" class="alert alert-danger d-flex align-items-center" role="alert">
+                    <h4 class="text-lg-center" th:text="${error}"></h4>
+                </div>
 
                 <div th:if="${updated!=null}" class="alert alert-success d-flex align-items-center" role="alert">
                     <h4 class="text-lg-center" th:text="${'Updated student with student no: ' + updated}"></h4>

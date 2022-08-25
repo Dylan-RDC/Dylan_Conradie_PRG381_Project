@@ -38,15 +38,43 @@ public class adminRouter {
         admin CurrentAdmin = (admin)myUser.getUser();
 
         if (updated.isPresent()) {
-            model.addAttribute("updated", updated.get());
+            String status = updated.get();
+            
+            if (status.equalsIgnoreCase("Failed to add student")) {
+                model.addAttribute("error", updated.get());
+                System.out.println(status);
+            }
+            else
+            {
+                
+                model.addAttribute("updated", updated.get());
+
+            }
         }
 
+        model.addAttribute("newStudent", new student());
 		model.addAttribute("students",students);
         model.addAttribute("admin",CurrentAdmin);
 		return "AdminHome.html";
 	}
 
+    @PostMapping("/register/student")
+    public String addStudent(@Validated @ModelAttribute("student") student newStud,@AuthenticationPrincipal MyUserDetails myUser, Model model) 
+    {
 
+        try {
+
+            if (studService.addStudent(newStud).equalsIgnoreCase("failed")) {
+                return  String.format("redirect:/admin/display/students?updated=%s", "Failed to add student") ;
+            }
+            return "redirect:/admin/display/students";
+        } catch (Exception e) {
+            return  String.format("redirect:/admin/display/students?updated=%s", "Failed to add student") ;
+        }
+        
+        
+    
+    }
     
     @GetMapping("/edit/student/{stud_id}")
     public String editStudentForm(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="stud_id") Long stud_id)
