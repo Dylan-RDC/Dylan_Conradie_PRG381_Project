@@ -1,6 +1,7 @@
 package com.studentportal.webapp.models;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
@@ -70,6 +71,7 @@ public class course implements Serializable, Comparable {
 
     public void setCourse_name(String course_name) {
         this.course_name = course_name;
+        List<String> list = new ArrayList<>(Arrays.asList("Test","test"));
     }
 
 
