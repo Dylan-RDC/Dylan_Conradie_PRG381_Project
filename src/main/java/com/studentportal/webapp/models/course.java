@@ -27,6 +27,8 @@ public class course implements Serializable, Comparable {
     @ManyToMany(mappedBy = "studentcourses",fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST,CascadeType.DETACH,CascadeType.MERGE,CascadeType.REFRESH})
     List<student> enrolledstudents = new ArrayList<student>();
 
+
+    //Constructors
     public course() {
     }
 
@@ -39,7 +41,7 @@ public class course implements Serializable, Comparable {
         this.course_name = course_name;
         enrolledstudents = enrolledStudents;
     }
-
+// End Constructors
     
     
 

@@ -40,7 +40,6 @@ public class AdminSecurityConfig {
         http.authorizeRequests().antMatchers("/").permitAll();
         http.authorizeRequests().antMatchers("/student/login").permitAll();
         http.authorizeRequests().antMatchers("/admin/login").permitAll();
-        // http.authorizeRequests().antMatchers("/register").permitAll();
         http.authenticationProvider(adminAuthenticationProvider() );
         http.antMatcher("/admin/**").authorizeRequests().anyRequest().hasRole("ADMIN")
             .and()

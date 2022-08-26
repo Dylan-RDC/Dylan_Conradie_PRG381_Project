@@ -72,7 +72,7 @@ public class student implements Serializable, Iuser{
     inverseJoinColumns = {@JoinColumn(name="course_id")}
     )
      List<course> studentcourses = new ArrayList<course>();
-
+  //Constructors
     public student() {
     }
 
@@ -113,6 +113,8 @@ public class student implements Serializable, Iuser{
         this.student_name = student_name;
         this.studentcourses = studentcourses;
     }
+// End Constructors
+
 
     public void setStudent_id(Long student_ID) {
         this.student_id = student_ID;
