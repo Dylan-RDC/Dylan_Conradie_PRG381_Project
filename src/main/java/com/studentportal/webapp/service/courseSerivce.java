@@ -3,13 +3,12 @@ package com.studentportal.webapp.service;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collection;
+
 import java.util.Collections;
 import java.util.List;
 
 import javax.transaction.Transactional;
 
-import org.hibernate.annotations.SortType;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.studentportal.webapp.models.course;
