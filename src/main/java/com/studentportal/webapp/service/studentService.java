@@ -3,6 +3,7 @@ package com.studentportal.webapp.service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -25,7 +26,6 @@ public class studentService {
     @Autowired
     studentRepo studRepo;
 
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
 
     public List<student> getAllStudents()
     {
@@ -35,6 +35,7 @@ public class studentService {
     public String addStudent(student newStud) {
 
         try {
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
             newStud.setPassword(encoder.encode(newStud.getPassword()));
             newStud = studRepo.save(newStud);
     
@@ -58,8 +59,7 @@ public class studentService {
 
     public String updateStudent(student stud)
     {
-        try {
-            
+        try {  
             studRepo.save(stud);
             return String.format("Student with ID: %s was updated successfully", stud.getStudent_id());
         } catch (Exception e) {
@@ -68,6 +68,50 @@ public class studentService {
         }
     }
 
+    public String updateStud(student stud)
+    {
+        try {
+            String response;
+            if ((response = stud.validate()).equalsIgnoreCase("correct")) {
+                System.out.println(stud.getNewPassword());
+                System.out.println(stud.getPassword());
+                studRepo.save(stud);
+                return response;
+            }
+            return response;
+        } catch (Exception e) {
+            return "Failed";
+        }
+        
+    }
+
+    public String updateStud(student stud, String oldPassword)
+    {
+       try {
+        String response;
+        
+                String hashPassword = oldPassword;
+         
+                
+                if ((response = stud.validateWithPassword(hashPassword)).equalsIgnoreCase("correct")) {
+                    studRepo.save(stud);
+                    return response;
+                } 
+                else
+                {
+                    return response;
+                }
+            
+        
+
+            }
+           
+        catch (Exception e) {
+        return "Failed";
+       }
+
+
+    }
 
     public student getStudent(Long stud_id)
     {

@@ -94,36 +94,24 @@ public class adminRouter {
     @PostMapping("/student/update")
     public String updateStudent(@Validated @ModelAttribute("student") student OldStud,@AuthenticationPrincipal MyUserDetails myUser,Model model)
     {
+        admin CurrentAdmin = (admin)myUser.getUser();
 
+             student newStud = studService.getStudent(OldStud.getStudent_id());
+             newStud.setEmail(OldStud.getEmail());
+             newStud.setStudent_address(OldStud.getStudent_address());
+             newStud.setStudent_name(OldStud.getStudent_name());
+             newStud.setNewPassword(OldStud.getPassword());
+             String response;
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
-        
-            admin CurrentAdmin = (admin)myUser.getUser();
+             if ((response=studService.updateStud(newStud)).equalsIgnoreCase("correct")) {
+                studService.updateStud(newStud);
+                return String.format("redirect:/admin/display/students?updated=%s", newStud.getStudent_id());
+             }
+             model.addAttribute("student",newStud);
+             model.addAttribute("error",response);
+             model.addAttribute("admin",CurrentAdmin);
+             return "AdminEditStudent.html";
 
-            student newStud = studService.getStudent(OldStud.getStudent_id());
-            newStud.setEmail(OldStud.getEmail());
-            newStud.setStudent_address(OldStud.getStudent_address());
-            newStud.setStudent_name(OldStud.getStudent_name());
-            String newP = OldStud.getPassword();
-            if (!newP.isBlank()) {
-
-                Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{10,}");
-                Matcher matcher = pattern.matcher(newP);
-                if (matcher.matches()) {
-                    newStud.setPassword(encoder.encode(OldStud.getPassword()));
-                    studService.updateStudent(newStud);
-                }
-                else
-                {
-                    model.addAttribute("student",newStud);
-                    model.addAttribute("error","Password is not correctly formatted");
-                    model.addAttribute("admin",CurrentAdmin);
-                    return "AdminEditStudent.html"; 
-                }
-            }
-            
-
-            return String.format("redirect:/admin/display/students?updated=%s", newStud.getStudent_id()); 
 
 	}
 

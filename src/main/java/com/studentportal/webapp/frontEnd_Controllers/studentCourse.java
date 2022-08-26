@@ -69,36 +69,71 @@ public class studentCourse {
     public String updateStudent(@AuthenticationPrincipal MyUserDetails myUser,@Validated @ModelAttribute("student") student OldStud,Model model)
     {
 
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
-    
-        if (encoder.matches(OldStud.getPassword(), myUser.getPassword()) ) {
-            //TODOOO
+        student user = (student)myUser.getUser();
+        // newStud.setEmail(OldStud.getEmail());
+        // newStud.setStudent_address(OldStud.getStudent_address());
+        // newStud.setStudent_name(OldStud.getStudent_name());
+        System.out.println(user.getEmail());
+        String hashpassword = user.getPassword();
+        student saveStud = new student();
 
-            student newStud = (student)myUser.getUser();
-            newStud.setEmail(OldStud.getEmail());
-            newStud.setStudent_address(OldStud.getStudent_address());
-            newStud.setStudent_name(OldStud.getStudent_name());
-            String newP;
-            if (!(newP = OldStud.getNewPassword()).isEmpty()) {
-                
-                Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{10,}");
-                Matcher matcher = pattern.matcher(newP);
-                if (matcher.matches()) {
-                    newStud.setPassword(encoder.encode(OldStud.getNewPassword()));
-                }
-                else
-                {
-                    return String.format("redirect:/student/display/details?status=%s", "Password was not correctly formatted");  
-                }
-            }
+        saveStud.setStudent_id(user.getStudent_id());
+        saveStud.setEmail(OldStud.getEmail());
+        saveStud.setStudent_name(OldStud.getStudent_name());
+        saveStud.setStudent_address(OldStud.getStudent_address());
+        saveStud.setPassword(OldStud.getPassword());
+        saveStud.setNewPassword(OldStud.getNewPassword());
 
-            studService.updateStudent(newStud);
+        String response;
+
+        if ((response = studService.updateStud(saveStud,hashpassword)).equalsIgnoreCase("correct")) {
+            System.out.println(response);
+            student updated = studService.getStudent(user.getStudent_id());
+            user.setEmail(updated.getEmail());
+            user.setStudent_name(updated.getStudent_name());
+            user.setStudent_address(updated.getStudent_address());
+            user.setPassword(updated.getPassword());
             return String.format("redirect:/student/display/details?status=%s", "Successfully Updated Details");
         }
-        else
-        {
-            return String.format("redirect:/student/display/details?status=%s", "Incorrect Credentials");
-        }  
+        else {
+            System.out.println(response);
+            return String.format("redirect:/student/display/details?status=%s", response);
+          
+        }
+
+      
+
+
+        // BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+    
+        // if (encoder.matches(OldStud.getPassword(), myUser.getPassword()) ) {
+        //     //TODOOO
+
+        //     student newStud = (student)myUser.getUser();
+        //     newStud.setEmail(OldStud.getEmail());
+        //     newStud.setStudent_address(OldStud.getStudent_address());
+        //     newStud.setStudent_name(OldStud.getStudent_name());
+        //     String newP;
+        //     if (!(newP = OldStud.getNewPassword()).isEmpty()) {
+                
+        //         Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{10,}");
+        //         Matcher matcher = pattern.matcher(newP);
+        //         if (matcher.matches()) {
+        //             newStud.setPassword(encoder.encode(OldStud.getNewPassword()));
+        //         }
+        //         else
+        //         {
+        //             return String.format("redirect:/student/display/details?status=%s", "Password was not correctly formatted");  
+        //         }
+        //     }
+
+        //     studService.updateStudent(newStud);
+        //     return String.format("redirect:/student/display/details?status=%s", "Successfully Updated Details");
+        // }
+        // else
+        // {
+        //     return String.format("redirect:/student/display/details?status=%s", "Incorrect Credentials");
+        // }  
 
 	}
 

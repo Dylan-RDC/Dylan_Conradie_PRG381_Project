@@ -3,10 +3,13 @@ package com.studentportal.webapp.models;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.persistence.*;
+import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
-
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -205,5 +208,73 @@ public class student implements Serializable, Iuser{
     public boolean isEnabled() {
 
         return  true;
+    }
+
+    public String validate(){
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+        Pattern passwordPattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{10,}");
+        Pattern emailPattern = Pattern.compile("^(.+)@(\\S+)$");
+      
+
+        Matcher passwordMatcher = passwordPattern.matcher(this.newPassword);
+        Matcher emailMatcher = emailPattern.matcher(this.getEmail());
+        if (this.getNewPassword()!=null && !this.getNewPassword().isBlank()) {
+            if (!passwordMatcher.matches()) {
+                return "Password is not correctly formatted";
+            }
+            else
+            {
+                this.password=encoder.encode(this.newPassword);
+                return "Correct";
+            }
+        }
+
+        if (!emailMatcher.matches()) {
+            return "Email is not correctly formatted";
+        }
+
+        if (this.getStudent_name().contains("@")) {
+            return "Name is not correctly formatted";
+        }
+        return "Correct";
+    }
+
+    public String validateWithPassword(String hashPassword)
+    {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
+        if (encoder.matches(this.getPassword(), hashPassword)) {
+            
+            Pattern passwordPattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{10,}");
+            Pattern emailPattern = Pattern.compile("^(.+)@(\\S+)$");
+            
+            Matcher passwordMatcher = passwordPattern.matcher(this.newPassword);
+            Matcher emailMatcher = emailPattern.matcher(this.getEmail());
+        
+            if (this.getNewPassword()!=null && !this.getNewPassword().isBlank()) {//check if new password is given
+                if (!passwordMatcher.matches()) {
+                    return "Password is not correctly formatted";
+                }
+                else
+                {
+                    this.password = encoder.encode(this.newPassword);
+                    return "Correct";
+                }
+            }
+    
+            if (!emailMatcher.matches()) {//validate email
+                return "Email is not correctly formatted";
+            }
+    
+            if (this.getStudent_name().contains("@")) {//validate name
+                return "Name is not correctly formatted";
+            }
+            this.password=hashPassword;
+            return "Correct"; 
+        }
+        else{
+            return "Invalid Credentials"; 
+        }
+
+        
     }
 }
