@@ -276,7 +276,5 @@ public class student implements Serializable, Iuser{
         else{
             return "Invalid Credentials"; 
         }
-
-        
     }
 }

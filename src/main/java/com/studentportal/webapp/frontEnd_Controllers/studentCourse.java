@@ -66,7 +66,6 @@ public class studentCourse {
 
         student user = (student)myUser.getUser();
     
-        System.out.println(user.getEmail());
         String hashpassword = user.getPassword();
         student saveStud = new student();
 
@@ -80,7 +79,6 @@ public class studentCourse {
         String response;
 
         if ((response = studService.updateStud(saveStud,hashpassword)).equalsIgnoreCase("correct")) {
-            System.out.println(response);
             student updated = studService.getStudent(user.getStudent_id());
             user.setEmail(updated.getEmail());
             user.setStudent_name(updated.getStudent_name());
@@ -89,7 +87,6 @@ public class studentCourse {
             return String.format("redirect:/student/display/details?status=%s", "Successfully Updated Details");
         }
         else {
-            System.out.println(response);
             return String.format("redirect:/student/display/details?status=%s", response);
           
         }

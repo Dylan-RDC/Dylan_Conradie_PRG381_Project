@@ -83,8 +83,7 @@ public class studentService {
         try {
             String response;
             if ((response = stud.validate()).equalsIgnoreCase("correct")) {
-                System.out.println(stud.getNewPassword());
-                System.out.println(stud.getPassword());
+  
                 studRepo.save(stud);
                 return response;
             }
@@ -111,9 +110,6 @@ public class studentService {
                 {
                     return response;
                 }
-            
-        
-
             }
            
         catch (Exception e) {

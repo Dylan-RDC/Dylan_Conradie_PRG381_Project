@@ -82,7 +82,6 @@ public class courseSerivce {
             }
 
         } catch (Exception e) {
-            System.out.println("FAILED");
             return "FAILED";
         }
 
