@@ -153,12 +153,16 @@
 
                         <th>Student ID</th>
                         <th>Student Name</th>
+                        <th>Student Address</th>
+                        <th>Student Email</th>
                         <th>Action</th>
                     </thead>
                     <tbody>
                         <tr class="rounded" th:each="student: ${students}">
                             <td th:text="${student.student_id}"></td>
                             <td th:text="${student.student_name}"></td>
+                            <td th:text="${student.student_address}"></td>
+                            <td th:text="${student.email}"></td>
                             <td> <a th:href="@{'/admin/display/edit/student/courses/' + ${student.student_id}}" class="btn
                                 btn-primary fw-bold rounded-pill py-0">COURSES</a>
                                 <a th:href="@{'/admin/display/edit/student/' + ${student.student_id}}" class="btn
