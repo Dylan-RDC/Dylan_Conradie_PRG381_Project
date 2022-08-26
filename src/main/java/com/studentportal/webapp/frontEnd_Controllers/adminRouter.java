@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
@@ -141,11 +140,9 @@ public class adminRouter {
     @GetMapping("/delete/student/{stud_id}/course/{course_id}")
     public String deleteStudCourse(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="course_id") Long course_id,@PathVariable(value="stud_id") Long stud_id)
     {
-        // student CurrentStud = (student)myUser.getUser();
-        // studService.removeStudentCourse(CurrentStud.getStudent_id(),id);
-        student stud = studService.getStudent(stud_id);
+          student stud = studService.getStudent(stud_id);
         stud.getStudent_id();
-        // CurrentStud.setStudCourse(studService.getStudent(CurrentStud.getStudent_id()).getStudentCourses());
+  
 
         if (studService.findByID(stud_id)==null) {
             return String.format("redirect:http:/admin/display/edit/students");
@@ -159,8 +156,7 @@ public class adminRouter {
 
         return String.format("redirect:http:/admin/display/edit/student/courses/%d", stud_id);
 
-		// model.addAttribute("student",CurrentStud);
-        // model.addAttribute("courses",CurrentStud.getStudentCourses());
+
       
 	}
 
@@ -228,7 +224,7 @@ public class adminRouter {
             
             return String.format("redirect:/admin/display/courses");
         } catch (Exception e) {
-            //TODO: handle exception
+
             
             return String.format("redirect:/admin/display/courses?error=%s", "Failed to add Course");
         }

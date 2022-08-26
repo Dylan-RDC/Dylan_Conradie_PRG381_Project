@@ -44,8 +44,7 @@ public class studentCourse {
 
         CurrentStud.setStudCourse(studService.getStudent(CurrentStud.getStudent_id()).getStudentCourses());
 
-		// model.addAttribute("student",CurrentStud);
-        // model.addAttribute("courses",CurrentStud.getStudentCourses());
+
 		return "redirect:http://localhost:8080/student/display/courses";
 	}
  
@@ -66,9 +65,7 @@ public class studentCourse {
     {
 
         student user = (student)myUser.getUser();
-        // newStud.setEmail(OldStud.getEmail());
-        // newStud.setStudent_address(OldStud.getStudent_address());
-        // newStud.setStudent_name(OldStud.getStudent_name());
+    
         System.out.println(user.getEmail());
         String hashpassword = user.getPassword();
         student saveStud = new student();

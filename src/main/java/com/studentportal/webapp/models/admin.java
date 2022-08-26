@@ -28,9 +28,8 @@ public class admin implements Iuser{
 
     @Transient()
      private String role = "ADMIN";
-    // private Boolean enabled;
 
-    // constructors
+     //Start Constructors
     public admin() {
     }
 
@@ -59,7 +58,7 @@ public class admin implements Iuser{
         this.contact = contact;
         this.email = admin_email;
     }
-
+  //End Constructors
 
     //getter and setters
     public Long getAdmin_id() {
@@ -129,8 +128,5 @@ public class admin implements Iuser{
         return true;
     }
 
-    // public void setEnabled(boolean enabled) {
-    //     this.enabled = enabled;
-    // }
     
 }
