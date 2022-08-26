@@ -56,10 +56,6 @@ public class studentCourse {
     {
 
         student CurrentStud = (student)myUser.getUser();
-        // System.out.println(newCourse.getCourse_id());
-        // course nC = cService.getCourseByID(newCourse.getCourse_id());
-        // CurrentStud.addStudentCourse(nC);
-        // studService.updateStudent(CurrentStud);
          studService.addStudentCourse(CurrentStud.getStudent_id(), newCourse.getCourse_id());
          CurrentStud.setStudCourse(studService.getStudent(CurrentStud.getStudent_id()).getStudentCourses());
 		return "redirect:http://localhost:8080/student/display/courses";
@@ -101,40 +97,6 @@ public class studentCourse {
           
         }
 
-      
-
-
-        // BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(10);
-    
-        // if (encoder.matches(OldStud.getPassword(), myUser.getPassword()) ) {
-        //     //TODOOO
-
-        //     student newStud = (student)myUser.getUser();
-        //     newStud.setEmail(OldStud.getEmail());
-        //     newStud.setStudent_address(OldStud.getStudent_address());
-        //     newStud.setStudent_name(OldStud.getStudent_name());
-        //     String newP;
-        //     if (!(newP = OldStud.getNewPassword()).isEmpty()) {
-                
-        //         Pattern pattern = Pattern.compile("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{10,}");
-        //         Matcher matcher = pattern.matcher(newP);
-        //         if (matcher.matches()) {
-        //             newStud.setPassword(encoder.encode(OldStud.getNewPassword()));
-        //         }
-        //         else
-        //         {
-        //             return String.format("redirect:/student/display/details?status=%s", "Password was not correctly formatted");  
-        //         }
-        //     }
-
-        //     studService.updateStudent(newStud);
-        //     return String.format("redirect:/student/display/details?status=%s", "Successfully Updated Details");
-        // }
-        // else
-        // {
-        //     return String.format("redirect:/student/display/details?status=%s", "Incorrect Credentials");
-        // }  
-
 	}
 
     @GetMapping("/courses")
@@ -143,30 +105,7 @@ public class studentCourse {
         Long CurrentStud_id = ((student) myUser.getUser()).getStudent_id();
         student CurrentStud = studService.getStudent(CurrentStud_id);
 
-
-
-        // student CurrentStud = studService.getStudent(((student)myUser.getUser()).getStudent_id());
-        List<course> course = cService.getAllCourses();
-        List<course> filtered = new ArrayList<>();
-
-        for (course c : course) {
-            boolean found = false;
-            for (course studc : CurrentStud.getStudentCourses()) {
-                if (c.getCourse_id()==studc.getCourse_id()) {
-                    found = true;
-                    break;
-                }
-
-            }
-
-            if (!found) {
-                filtered.add(c);
-            }            
-
-
-        }
-
-        
+        List<course> filtered = cService.filteredCourses(CurrentStud);
 
         model.addAttribute("newCourse", new course());
 		model.addAttribute("student",CurrentStud);
@@ -174,12 +113,6 @@ public class studentCourse {
 		return "StudentCourses.html";
 	}
 
-    @GetMapping("/sutdent/register/{name}")
-    public String getStudentRegister(Model model,@PathVariable(value="name") String studname) {
-            model.addAttribute("names",new ArrayList<String>(Arrays.asList(studname)));
-
-            return "test.html";
-    }
    
     @GetMapping("/details")
 	public String homePage(@RequestParam("status") Optional<String> status, @AuthenticationPrincipal MyUserDetails myUser,Model model) 

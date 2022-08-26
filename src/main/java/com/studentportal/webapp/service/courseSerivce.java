@@ -2,6 +2,7 @@ package com.studentportal.webapp.service;
 
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -22,6 +23,41 @@ public class courseSerivce {
     
     @Autowired
     courseRepo courseRep;
+
+    
+
+    public List<course> filteredCourses(student CurrentStud)
+    {   
+        List<course> courses = courseRep.findAll();
+        List<course> filtered = new ArrayList<>();
+
+        for (course c : courses) {
+            boolean found = false;
+            for (course studc : CurrentStud.getStudentCourses()) {
+                if (c.getCourse_id()==studc.getCourse_id()) {
+                    found = true;
+                    break;
+                }
+
+            }
+            if (!found) {
+                filtered.add(c);
+            } 
+
+
+        }
+        return filtered;
+    }
+
+    public course getByID(Long course_id)
+    {
+        course found;
+        if (courseRep.existsById(course_id)) {
+            found = courseRep.getReferenceById(course_id);
+            return found;
+        }
+        return null;
+    }
 
     public List<course> getAllCourses()
     {

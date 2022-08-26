@@ -27,6 +27,17 @@ public class studentService {
     studentRepo studRepo;
 
 
+    public student findByID(Long stud_id)
+    {
+        student found;
+       
+        if (studRepo.existsById(stud_id)) {
+            found= studRepo.getReferenceById(stud_id);
+            return found;
+        }
+        return null;
+    }
+
     public List<student> getAllStudents()
     {
         return studRepo.findAll();

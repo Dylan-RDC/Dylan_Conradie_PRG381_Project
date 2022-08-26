@@ -83,12 +83,19 @@ public class adminRouter {
     @GetMapping("/edit/student/{stud_id}")
     public String editStudentForm(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="stud_id") Long stud_id)
 	{
-        admin CurrentAdmin = (admin)myUser.getUser();
-        student stud = studService.getStudent(stud_id);
-
-		model.addAttribute("student",stud);
-        model.addAttribute("admin",CurrentAdmin);
-		return "AdminEditStudent.html";
+        if (studService.findByID(stud_id)==null) {
+      
+            return "redirect:/admin/display/students";
+        }
+        else
+        {
+            admin CurrentAdmin = (admin)myUser.getUser();
+            student stud = studService.getStudent(stud_id);
+    
+            model.addAttribute("student",stud);
+            model.addAttribute("admin",CurrentAdmin);
+            return "AdminEditStudent.html";  
+        }
 	}
 
     @PostMapping("/student/update")
@@ -115,6 +122,64 @@ public class adminRouter {
 
 	}
 
+
+    @GetMapping("/edit/student/courses/{student_id}")
+    public String getStudentCourses(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="student_id") Long stud_id)
+    {
+        student CurrentStud = studService.findByID(stud_id);
+        List<course> filtered = cService.filteredCourses(CurrentStud);
+
+        admin CurrentAdmin = (admin)myUser.getUser();
+        // student stud = studService.getStudent(stud_id);
+        model.addAttribute("admin",CurrentAdmin);
+        model.addAttribute("student", CurrentStud);
+        model.addAttribute("courses", filtered);
+        return "AdminStudentCourses.html";
+    }
+
+       
+    @GetMapping("/delete/student/{stud_id}/course/{course_id}")
+    public String deleteStudCourse(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="course_id") Long course_id,@PathVariable(value="stud_id") Long stud_id)
+    {
+        // student CurrentStud = (student)myUser.getUser();
+        // studService.removeStudentCourse(CurrentStud.getStudent_id(),id);
+        student stud = studService.getStudent(stud_id);
+        stud.getStudent_id();
+        // CurrentStud.setStudCourse(studService.getStudent(CurrentStud.getStudent_id()).getStudentCourses());
+
+        if (studService.findByID(stud_id)==null) {
+            return String.format("redirect:http:/admin/display/edit/students");
+        }
+
+        if (cService.getByID(course_id)==null) {
+            return String.format("redirect:http:/admin/display/edit/students");
+        }
+        studService.removeStudentCourse(stud_id,course_id);
+
+
+        return String.format("redirect:http:/admin/display/edit/student/courses/%d", stud_id);
+
+		// model.addAttribute("student",CurrentStud);
+        // model.addAttribute("courses",CurrentStud.getStudentCourses());
+      
+	}
+
+    @PostMapping("/student/add/course/{stud_id}")
+    public String addStudCourse(@AuthenticationPrincipal MyUserDetails myUser,@PathVariable(value="stud_id") Long stud_id,@Validated @ModelAttribute("newCourse") course newCourse,Model model)
+    {
+        if (studService.findByID(stud_id)==null) {
+            return String.format("redirect:http:/admin/display/edit/students");
+        }
+
+        if (cService.getByID(newCourse.getCourse_id())==null) {
+            return String.format("redirect:http:/admin/display/edit/students");
+        }
+
+         studService.addStudentCourse(stud_id, newCourse.getCourse_id());
+         return String.format("redirect:http:/admin/display/edit/student/courses/%d", stud_id);
+	}
+    
+
     @GetMapping("/courses")
     public String adminCourses(@RequestParam("error") Optional<String> error,@AuthenticationPrincipal MyUserDetails myUser,Model model)
     {
@@ -134,8 +199,9 @@ public class adminRouter {
     @GetMapping("/delete/course/{course_id}")
     public String deleteCourse(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="course_id") Long course_id) {
 
-        cService.deleteCourseByID(course_id);
-
+        if (cService.getByID(course_id)!=null) {
+            cService.deleteCourseByID(course_id);
+        }
         return "redirect:/admin/display/courses";
 
     }
@@ -143,8 +209,11 @@ public class adminRouter {
     @GetMapping("/delete/student/{student_id}")
     public String deleteStudent(@AuthenticationPrincipal MyUserDetails myUser,Model model,@PathVariable(value="student_id") Long student_id) {
         
-        studService.deleteStudent(student_id);
+        if (studService.findByID(student_id)==null) {
+            return "redirect:/admin/display/students";
+        }
 
+        studService.deleteStudent(student_id);
         return "redirect:/admin/display/students";
 
     }
