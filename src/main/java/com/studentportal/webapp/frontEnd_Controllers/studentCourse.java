@@ -67,7 +67,7 @@ public class studentCourse {
         student user = (student)myUser.getUser();
     
         String hashpassword = user.getPassword();
-        student saveStud = new student();
+        student saveStud = studService.getStudent(user.getStudent_id());
 
         saveStud.setStudent_id(user.getStudent_id());
         saveStud.setEmail(OldStud.getEmail());
@@ -75,7 +75,6 @@ public class studentCourse {
         saveStud.setStudent_address(OldStud.getStudent_address());
         saveStud.setPassword(OldStud.getPassword());
         saveStud.setNewPassword(OldStud.getNewPassword());
-
         String response;
 
         if ((response = studService.updateStud(saveStud,hashpassword)).equalsIgnoreCase("correct")) {

@@ -83,7 +83,7 @@ public class studentService {
         try {
             String response;
             if ((response = stud.validate()).equalsIgnoreCase("correct")) {
-  
+
                 studRepo.save(stud);
                 return response;
             }
@@ -103,6 +103,7 @@ public class studentService {
          
                 
                 if ((response = stud.validateWithPassword(hashPassword)).equalsIgnoreCase("correct")) {
+
                     studRepo.save(stud);
                     return response;
                 } 
